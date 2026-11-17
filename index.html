@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xhub Studio — Creator Dashboard</title>
+  <title>Xhub Creator Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,8 +15,8 @@
           fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             studioBg: '#0f0f0f',
-            studioCard: '#1a1a1a',
-            studioHover: '#272727',
+            studioCard: '#1f1f1f',
+            studioHover: '#2e2e2e',
             studioBorder: '#2d2d2d',
             xhubRed: '#ff0000'
           }
@@ -25,385 +25,136 @@
     }
   </script>
 </head>
-<body class="bg-studioBg text-gray-100 font-sans antialiased selection:bg-red-600 selection:text-white">
+<body class="bg-studioBg text-gray-100 font-sans antialiased pb-20 selection:bg-red-600 selection:text-white">
 
-  <!-- TOP HEADER BAR -->
-  <header class="sticky top-0 z-40 h-14 bg-studioCard border-b border-studioBorder px-4 flex items-center justify-between gap-4">
-    <div class="flex items-center gap-3">
-      <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-studioHover text-gray-300">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-5 bg-xhubRed rounded flex items-center justify-center text-white text-[10px]">
-          <i class="fa-solid fa-play"></i>
-        </div>
-        <span class="font-extrabold text-base tracking-tight text-white">Studio</span>
+  <!-- TOP HEADER (Notifications removed, Create button retained) -->
+  <header class="sticky top-0 z-40 h-14 bg-studioCard border-b border-studioBorder px-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-5 bg-xhubRed rounded flex items-center justify-center text-white text-[10px]">
+        <i class="fa-solid fa-play"></i>
       </div>
+      <span class="font-extrabold text-base tracking-tight text-white">Studio</span>
     </div>
 
-    <!-- Search Across Channel -->
-    <div class="hidden sm:flex items-center flex-1 max-w-md bg-studioBg border border-studioBorder rounded-lg px-3 py-1.5">
-      <i class="fa-solid fa-magnifying-glass text-gray-500 text-xs mr-2.5"></i>
-      <input id="global-search" oninput="filterContentTable()" type="text" placeholder="Search across your channel" class="w-full bg-transparent text-xs text-white focus:outline-none" />
-    </div>
-
-    <!-- Right Controls -->
-    <div class="flex items-center gap-2.5">
-      <button onclick="openUploadModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-xhubRed hover:bg-red-700 text-white text-xs font-semibold transition-colors">
-        <i class="fa-solid fa-video-plus"></i>
-        <i class="fa-solid fa-plus text-[10px]"></i>
-        <span>Create</span>
+    <div class="flex items-center gap-3">
+      <button onclick="openUploadModal()" class="w-9 h-9 rounded-full bg-studioHover flex items-center justify-center text-white text-sm hover:bg-zinc-700">
+        <i class="fa-solid fa-plus"></i>
       </button>
-      <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Xhub" alt="Avatar" class="w-8 h-8 rounded-full border border-zinc-700 object-cover bg-zinc-800" />
+      <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=NGTHAKOR" alt="Avatar" class="w-8 h-8 rounded-full border border-zinc-700 object-cover bg-zinc-800" />
     </div>
   </header>
 
   <!-- MAIN WORKSPACE -->
-  <div class="flex min-h-[calc(100vh-3.5rem)]">
+  <main class="max-w-md mx-auto p-4 space-y-6">
     
-    <!-- LEFT SIDEBAR (Clean: Only Dashboard, Content, Analytics, Earn, Customization) -->
-    <aside id="studio-sidebar" class="w-60 shrink-0 bg-studioCard border-r border-studioBorder flex flex-col justify-between transition-all duration-200">
+    <!-- 1. CHANNEL HEADER & SUBSCRIBERS -->
+    <div class="flex items-center gap-4 bg-studioCard border border-studioBorder rounded-2xl p-4 shadow-lg">
+      <img id="channel-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=NGTHAKOR" class="w-16 h-16 rounded-full border-2 border-red-600 object-cover bg-zinc-800" />
       <div>
-        <!-- Profile Block -->
-        <div class="p-5 text-center border-b border-studioBorder/60">
-          <img id="sidebar-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Xhub" alt="Channel" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-zinc-700 bg-zinc-800 mb-3" />
-          <p class="text-[11px] text-gray-400">Your channel</p>
-          <h3 id="sidebar-channel-name" class="text-sm font-bold text-white truncate mt-0.5">Xhub Creator</h3>
-        </div>
+        <h2 id="channel-name" class="text-base font-extrabold text-white">NG THAKOR 117</h2>
+        <p id="channel-subs" class="text-xl font-bold text-white mt-0.5">337</p>
+        <p class="text-[11px] text-gray-400">Total subscribers</p>
+      </div>
+    </div>
 
-        <!-- Navigation Menu (Comments, Subtitles, Copyright, Audio Library Removed) -->
-        <nav class="p-2.5 space-y-1">
-          <button onclick="switchStudioTab('dashboard')" data-nav="dashboard" class="nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-studioHover text-xhubRed border-l-4 border-xhubRed">
-            <i class="fa-solid fa-table-columns w-4 text-center"></i>
-            <span>Dashboard</span>
-          </button>
-          <button onclick="switchStudioTab('content')" data-nav="content" class="nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-gray-300 hover:bg-studioHover">
-            <i class="fa-solid fa-film w-4 text-center"></i>
-            <span>Content</span>
-          </button>
-          <button onclick="switchStudioTab('analytics')" data-nav="analytics" class="nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-gray-300 hover:bg-studioHover">
-            <i class="fa-solid fa-chart-column w-4 text-center"></i>
-            <span>Analytics</span>
-          </button>
-          <button onclick="switchStudioTab('earn')" data-nav="earn" class="nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-gray-300 hover:bg-studioHover">
-            <i class="fa-solid fa-dollar-sign w-4 text-center"></i>
-            <span>Earn</span>
-          </button>
-          <button onclick="switchStudioTab('customization')" data-nav="customization" class="nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-gray-300 hover:bg-studioHover">
-            <i class="fa-solid fa-wand-magic-sparkles w-4 text-center"></i>
-            <span>Customization</span>
-          </button>
-        </nav>
+    <!-- 2. CHANNEL ANALYTICS (Views, Watch time, Subscribers (28 days), Extra Custom Box) -->
+    <div class="space-y-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-sm font-bold text-white">Channel analytics</h3>
+        <span class="text-[11px] text-gray-400">Last 28 days</span>
       </div>
 
-      <!-- Bottom Link to Main Site -->
-      <div class="p-3 border-t border-studioBorder">
-        <a href="https://xhub-xxx.pages.dev" target="_blank" class="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-gray-400 hover:text-white hover:bg-studioHover">
-          <span class="flex items-center gap-2.5"><i class="fa-solid fa-tv"></i> View on watch site</span>
-          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </a>
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Views Box -->
+        <div class="bg-studioCard border border-studioBorder rounded-2xl p-4 space-y-1">
+          <p class="text-xs text-gray-400">Views</p>
+          <div class="flex items-center gap-2">
+            <span id="stat-views" class="text-xl font-extrabold text-white">28</span>
+            <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-arrow-down text-[10px]"></i></span>
+          </div>
+        </div>
+
+        <!-- Watch Time Box -->
+        <div class="bg-studioCard border border-studioBorder rounded-2xl p-4 space-y-1">
+          <p class="text-xs text-gray-400">Watch time (hours)</p>
+          <div class="flex items-center gap-2">
+            <span id="stat-watchtime" class="text-xl font-extrabold text-white">0.1</span>
+            <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-arrow-down text-[10px]"></i></span>
+          </div>
+        </div>
+
+        <!-- Subscribers Box (Last 28 days) -->
+        <div class="bg-studioCard border border-studioBorder rounded-2xl p-4 space-y-1">
+          <p class="text-xs text-gray-400">Subscribers (28d)</p>
+          <div class="flex items-center gap-2">
+            <span id="stat-sub-28" class="text-xl font-extrabold text-white">+12</span>
+            <span class="text-xs text-emerald-500 font-bold"><i class="fa-solid fa-arrow-up text-[10px]"></i></span>
+          </div>
+        </div>
+
+        <!-- Extra Custom Box for Ads / Sponsors / Widgets -->
+        <div class="bg-studioCard border border-studioBorder rounded-2xl p-4 space-y-1 relative overflow-hidden group">
+          <div class="flex items-center justify-between">
+            <p class="text-xs text-gray-400">Sponsor / Ad Slot</p>
+            <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
+          </div>
+          <p class="text-xs font-bold text-amber-300 truncate">Active Banner</p>
+          <a href="#" onclick="openEarnSettings()" class="text-[10px] text-blue-400 underline block">Manage slot</a>
+        </div>
       </div>
-    </aside>
+    </div>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 p-5 sm:p-7 overflow-y-auto">
-      
-      <!-- 1. CHANNEL DASHBOARD -->
-      <section id="tab-dashboard" class="studio-tab space-y-6">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <h1 class="text-xl font-bold text-white">Channel dashboard</h1>
-          <div class="flex items-center gap-2">
-            <button onclick="openUploadModal()" class="px-3.5 py-2 rounded-lg bg-studioCard hover:bg-studioHover border border-studioBorder text-xs font-semibold flex items-center gap-2">
-              <i class="fa-solid fa-upload"></i> Upload videos
-            </button>
-            <button onclick="switchStudioTab('analytics')" class="px-3.5 py-2 rounded-lg bg-studioCard hover:bg-studioHover border border-studioBorder text-xs font-semibold flex items-center gap-2">
-              <i class="fa-solid fa-chart-line"></i> Full analytics
-            </button>
-          </div>
-        </div>
+    <!-- 3. LATEST PUBLISHED CONTENT (Comments removed from video cards) -->
+    <div class="space-y-3">
+      <h3 class="text-sm font-bold text-white px-1">Latest published content</h3>
+      <div id="content-videos-list" class="space-y-3"></div>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Latest Video Performance Card -->
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-4">
-            <h2 class="text-sm font-bold text-white">Latest video performance</h2>
-            <div id="latest-video-box" class="space-y-4">
-              <div class="aspect-video rounded-xl bg-zinc-900 overflow-hidden relative flex items-center justify-center border border-studioBorder">
-                <video id="latest-vid-preview" class="w-full h-full object-cover hidden" muted></video>
-                <div id="latest-vid-placeholder" class="text-center p-4">
-                  <i class="fa-solid fa-film text-2xl text-gray-600 mb-2"></i>
-                  <p class="text-xs text-gray-400">No videos uploaded yet</p>
-                </div>
-                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3">
-                  <p id="latest-vid-title" class="text-xs font-bold text-white truncate">Upload your first video</p>
-                </div>
-              </div>
+  </main>
 
-              <div class="space-y-2.5 text-xs pt-1">
-                <p class="text-gray-400 text-[11px]">Performance compared to your recent uploads</p>
-                <div class="flex justify-between py-1 border-b border-studioBorder/50">
-                  <span class="text-gray-400">Views</span>
-                  <span id="latest-vid-views" class="font-semibold text-white">0</span>
-                </div>
-                <div class="flex justify-between py-1 border-b border-studioBorder/50">
-                  <span class="text-gray-400">Likes</span>
-                  <span id="latest-vid-likes" class="font-semibold text-white">0</span>
-                </div>
-                <div class="flex justify-between py-1">
-                  <span class="text-gray-400">Status</span>
-                  <span class="font-semibold text-emerald-400">Public</span>
-                </div>
-              </div>
+  <!-- BOTTOM MOBILE NAVIGATION (Community Tab Removed, 4 Tabs: Dashboard, Content, Analytics, Earn) -->
+  <nav class="fixed bottom-0 inset-x-0 bg-studioCard border-t border-studioBorder h-16 flex items-center justify-around px-2 z-40 text-xs">
+    <button onclick="switchTab('dashboard')" class="nav-btn flex flex-col items-center gap-1 text-xhubRed font-semibold" data-tab="dashboard">
+      <i class="fa-solid fa-table-columns text-base"></i>
+      <span>Dashboard</span>
+    </button>
+    <button onclick="switchTab('content')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-white" data-tab="content">
+      <i class="fa-solid fa-film text-base"></i>
+      <span>Content</span>
+    </button>
+    <button onclick="switchTab('analytics')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-white" data-tab="analytics">
+      <i class="fa-solid fa-chart-column text-base"></i>
+      <span>Analytics</span>
+    </button>
+    <button onclick="switchTab('earn')" class="nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-white" data-tab="earn">
+      <i class="fa-solid fa-dollar-sign text-base"></i>
+      <span>Earn</span>
+    </button>
+  </nav>
 
-              <div class="pt-2 flex gap-4 text-xs font-bold text-blue-400">
-                <button onclick="switchStudioTab('analytics')" class="hover:underline uppercase">Go to video analytics</button>
-                <button onclick="switchStudioTab('content')" class="hover:underline uppercase">Edit details</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Channel Analytics Card -->
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-5 flex flex-col justify-between space-y-5">
-            <div class="space-y-4">
-              <h2 class="text-sm font-bold text-white">Channel analytics</h2>
-              <div>
-                <p class="text-xs text-gray-400">Current subscribers</p>
-                <p id="dash-subs-count" class="text-3xl font-extrabold text-white mt-1">0</p>
-              </div>
-
-              <div class="pt-3 border-t border-studioBorder space-y-2.5 text-xs">
-                <div class="flex justify-between items-center">
-                  <span class="font-bold text-white">Summary</span>
-                  <span class="text-[11px] text-gray-400">All time</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-400">Total Views</span>
-                  <span id="dash-total-views" class="font-semibold text-white">0</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-400">Total Videos</span>
-                  <span id="dash-total-videos" class="font-semibold text-white">0</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-400">Estimated revenue</span>
-                  <span id="dash-est-revenue" class="font-semibold text-emerald-400">₹0.00</span>
-                </div>
-              </div>
-
-              <div class="pt-3 border-t border-studioBorder space-y-2.5 text-xs">
-                <div class="flex justify-between items-center">
-                  <span class="font-bold text-white">Top videos</span>
-                  <span class="text-[11px] text-gray-400">Views</span>
-                </div>
-                <div id="dash-top-videos" class="space-y-2"></div>
-              </div>
-            </div>
-
-            <button onclick="switchStudioTab('analytics')" class="text-left text-xs font-bold text-blue-400 hover:underline uppercase">
-              Go to channel analytics
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. CHANNEL CONTENT -->
-      <section id="tab-content" class="studio-tab hidden space-y-5">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <h1 class="text-xl font-bold text-white">Channel content</h1>
-          <div class="flex items-center gap-2">
-            <button onclick="exportVideosJSON()" class="px-3.5 py-2 rounded-lg bg-studioCard hover:bg-studioHover border border-studioBorder text-xs font-semibold flex items-center gap-2">
-              <i class="fa-solid fa-download"></i> Export JSON
-            </button>
-            <button onclick="openUploadModal()" class="px-3.5 py-2 rounded-lg bg-xhubRed hover:bg-red-700 text-white text-xs font-semibold flex items-center gap-2">
-              <i class="fa-solid fa-plus"></i> Upload video
-            </button>
-          </div>
-        </div>
-
-        <!-- Filter Bar -->
-        <div class="bg-studioCard border border-studioBorder rounded-2xl overflow-hidden">
-          <div class="p-3.5 border-b border-studioBorder flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2 flex-1 max-w-sm bg-studioBg border border-studioBorder rounded-lg px-3 py-1.5">
-              <i class="fa-solid fa-filter text-gray-500 text-xs"></i>
-              <input id="content-filter-input" oninput="filterContentTable()" type="text" placeholder="Filter by title" class="w-full bg-transparent text-xs text-white focus:outline-none" />
-            </div>
-            <span id="content-total-label" class="text-xs text-gray-400">0 videos</span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="border-b border-studioBorder text-gray-400 bg-zinc-900/40">
-                  <th class="p-3.5">Video</th>
-                  <th class="p-3.5">Visibility</th>
-                  <th class="p-3.5">Date</th>
-                  <th class="p-3.5">Views</th>
-                  <th class="p-3.5">Likes</th>
-                  <th class="p-3.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="content-videos-tbody" class="divide-y divide-studioBorder"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. CHANNEL ANALYTICS -->
-      <section id="tab-analytics" class="studio-tab hidden space-y-6">
-        <div class="flex items-center justify-between">
-          <h1 class="text-xl font-bold text-white">Channel analytics</h1>
-          <span class="px-3 py-1.5 rounded-lg bg-studioCard border border-studioBorder text-xs text-gray-300">All time overview</span>
-        </div>
-
-        <!-- 4 Metric Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-4">
-            <p class="text-xs text-gray-400">Views</p>
-            <p id="ana-views" class="text-2xl font-extrabold text-white mt-1">0</p>
-          </div>
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-4">
-            <p class="text-xs text-gray-400">Total Likes</p>
-            <p id="ana-likes" class="text-2xl font-extrabold text-white mt-1">0</p>
-          </div>
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-4">
-            <p class="text-xs text-gray-400">Subscribers</p>
-            <p id="ana-subs" class="text-2xl font-extrabold text-white mt-1">0</p>
-          </div>
-          <div class="bg-studioCard border border-studioBorder rounded-2xl p-4">
-            <p class="text-xs text-gray-400">Estimated revenue</p>
-            <p id="ana-rev" class="text-2xl font-extrabold text-emerald-400 mt-1">₹0.00</p>
-          </div>
-        </div>
-
-        <!-- Visual Bar Graph -->
-        <div class="bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-white">Video Performance Comparison</h3>
-            <span class="text-xs text-gray-400">Views per video</span>
-          </div>
-          <div id="analytics-bars" class="h-44 flex items-end gap-3 pt-4 border-b border-studioBorder px-2"></div>
-        </div>
-
-        <!-- Top Videos Leaderboard -->
-        <div class="bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-3">
-          <h3 class="text-sm font-bold text-white">Top videos by views & engagement</h3>
-          <div id="analytics-top-list" class="divide-y divide-studioBorder text-xs"></div>
-        </div>
-      </section>
-
-      <!-- 4. EARN / MONETIZATION -->
-      <section id="tab-earn" class="studio-tab hidden space-y-6 max-w-3xl">
-        <h1 class="text-xl font-bold text-white">Channel monetization & Earn</h1>
-        <div class="bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-4">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-sm font-bold text-white">Direct Sponsor & Ad Banner</h3>
-              <p class="text-xs text-gray-400">Manage sponsor banner links shown on your videos.</p>
-            </div>
-            <label class="flex items-center gap-2 text-xs cursor-pointer">
-              <input id="earn-enable" type="checkbox" class="accent-xhubRed w-4 h-4" />
-              <span class="font-semibold text-emerald-400">Active</span>
-            </label>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <label class="block text-xs text-gray-400 mb-1">Sponsor Title</label>
-              <input id="earn-title" type="text" placeholder="e.g., My Merch Store" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-400 mb-1">Sponsor Link URL</label>
-              <input id="earn-link" type="text" placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-            </div>
-          </div>
-
-          <button onclick="saveEarnSettings()" class="px-5 py-2 rounded-xl bg-xhubRed hover:bg-red-700 text-white text-xs font-semibold">
-            Save Monetization Settings
-          </button>
-        </div>
-      </section>
-
-      <!-- 5. CHANNEL CUSTOMIZATION (Branding & Basic Info) -->
-      <section id="tab-customization" class="studio-tab hidden space-y-6 max-w-3xl">
-        <div class="flex items-center justify-between">
-          <h1 class="text-xl font-bold text-white">Channel customization</h1>
-          <button onclick="saveChannelCustomization()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold">
-            Publish
-          </button>
-        </div>
-
-        <!-- Sub Tabs -->
-        <div class="flex gap-6 border-b border-studioBorder text-xs font-semibold">
-          <button onclick="switchCustomSub('branding')" id="sub-btn-branding" class="pb-2.5 border-b-2 border-blue-500 text-blue-400">Branding</button>
-          <button onclick="switchCustomSub('basic')" id="sub-btn-basic" class="pb-2.5 border-b-2 border-transparent text-gray-400 hover:text-white">Basic info</button>
-        </div>
-
-        <!-- Branding Sub-section -->
-        <div id="custom-sub-branding" class="bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-5">
-          <div>
-            <h3 class="text-sm font-bold text-white">Picture</h3>
-            <p class="text-xs text-gray-400 mb-3">Your profile picture appears alongside your videos on Xhub.</p>
-            <div class="flex items-center gap-4">
-              <img id="custom-avatar-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Xhub" class="w-20 h-20 rounded-full object-cover border border-studioBorder bg-zinc-900" />
-              <div class="flex-1 space-y-2">
-                <input id="custom-avatar-url" type="text" placeholder="Paste Profile Image URL" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-              </div>
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-studioBorder">
-            <h3 class="text-sm font-bold text-white">Banner image</h3>
-            <p class="text-xs text-gray-400 mb-3">Displayed across the top of your channel page.</p>
-            <input id="custom-banner-url" type="text" placeholder="Paste Banner Image URL (2048 x 1152 px)" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-          </div>
-        </div>
-
-        <!-- Basic Info Sub-section -->
-        <div id="custom-sub-basic" class="hidden bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-300 mb-1">Name</label>
-            <input id="custom-name" type="text" placeholder="Channel name" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-300 mb-1">Handle</label>
-            <input id="custom-handle" type="text" placeholder="@username" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
-            <textarea id="custom-desc" rows="4" placeholder="Tell viewers about your channel" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white"></textarea>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- UPLOAD VIDEO MODAL -->
+  <!-- UPLOAD MODAL -->
   <div id="upload-modal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4">
-    <div class="w-full max-w-lg bg-studioCard border border-studioBorder rounded-2xl p-6 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-studioBorder pb-3">
-        <h3 class="text-base font-bold text-white">Upload videos</h3>
+    <div class="w-full max-w-sm bg-studioCard border border-studioBorder rounded-2xl p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-studioBorder pb-2">
+        <h3 class="text-sm font-bold text-white">Upload video</h3>
         <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="space-y-3">
+      <div class="space-y-3 text-xs">
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Video Title *</label>
-          <input id="up-title" type="text" placeholder="Enter a catchy title" class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-xs text-white" />
+          <label class="block text-gray-400 mb-1">Title</label>
+          <input id="up-title" type="text" placeholder="Video title..." class="w-full px-3 py-2 rounded-xl bg-studioBg border border-studioBorder text-white" />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 mb-1">Select Video File (MP4/WebM) *</label>
-          <input id="up-file" type="file" accept="video/*" class="w-full text-xs text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-xhubRed file:text-white file:font-semibold" />
+          <label class="block text-gray-400 mb-1">Video File</label>
+          <input id="up-file" type="file" accept="video/*" class="w-full text-gray-300" />
         </div>
-        <p id="up-status" class="text-xs text-amber-400 hidden"></p>
       </div>
-      <div class="flex justify-end gap-2 pt-3 border-t border-studioBorder">
-        <button onclick="closeUploadModal()" class="px-4 py-2 rounded-xl bg-studioHover text-xs font-semibold">Cancel</button>
-        <button onclick="handleVideoUpload()" class="px-5 py-2 rounded-xl bg-xhubRed hover:bg-red-700 text-white text-xs font-semibold">Upload</button>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeUploadModal()" class="px-3 py-1.5 rounded-xl bg-studioHover text-xs font-semibold">Cancel</button>
+        <button onclick="uploadVideo()" class="px-4 py-1.5 rounded-xl bg-xhubRed text-white text-xs font-semibold">Upload</button>
       </div>
     </div>
   </div>
-
-  <!-- TOAST -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-zinc-900 border border-zinc-700 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -412,255 +163,77 @@
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let channelVideos = [];
-    let currentUser = null;
-
-    function toggleSidebar() {
-      document.getElementById('studio-sidebar').classList.toggle('hidden');
-    }
-
-    function switchStudioTab(tab) {
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        const isActive = btn.getAttribute('data-nav') === tab;
-        btn.className = isActive
-          ? 'nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-studioHover text-xhubRed border-l-4 border-xhubRed'
-          : 'nav-item w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-gray-300 hover:bg-studioHover';
-      });
-      document.querySelectorAll('.studio-tab').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
-    }
-
-    function switchCustomSub(sub) {
-      document.getElementById('custom-sub-branding').classList.toggle('hidden', sub !== 'branding');
-      document.getElementById('custom-sub-basic').classList.toggle('hidden', sub !== 'basic');
-      document.getElementById('sub-btn-branding').className = sub === 'branding'
-        ? 'pb-2.5 border-b-2 border-blue-500 text-blue-400'
-        : 'pb-2.5 border-b-2 border-transparent text-gray-400 hover:text-white';
-      document.getElementById('sub-btn-basic').className = sub === 'basic'
-        ? 'pb-2.5 border-b-2 border-blue-500 text-blue-400'
-        : 'pb-2.5 border-b-2 border-transparent text-gray-400 hover:text-white';
-    }
-
-    function openUploadModal() {
-      document.getElementById('upload-modal').classList.remove('hidden');
-    }
-    function closeUploadModal() {
-      document.getElementById('upload-modal').classList.add('hidden');
-    }
 
     async function initStudio() {
-      const { data: { session } } = await sb.auth.getSession();
-      currentUser = session?.user || null;
-
-      // Load Profile if logged in
-      if (currentUser) {
-        const { data: prof } = await sb.from('profiles').select('*').eq('user_id', currentUser.id).single();
-        if (prof) {
-          document.getElementById('sidebar-channel-name').textContent = prof.channel_name || 'Xhub Creator';
-          document.getElementById('custom-name').value = prof.channel_name || '';
-          document.getElementById('custom-handle').value = prof.username || '';
-          if (prof.avatar_url) {
-            document.getElementById('sidebar-avatar').src = prof.avatar_url;
-            document.getElementById('header-avatar').src = prof.avatar_url;
-            document.getElementById('custom-avatar-preview').src = prof.avatar_url;
-            document.getElementById('custom-avatar-url').value = prof.avatar_url;
-          }
-        }
-      }
-
-      // Fetch videos (channel specific if logged in, otherwise all platform videos)
-      let query = sb.from('videos').select('*').order('created_at', { ascending: false });
-      if (currentUser) query = query.eq('user_id', currentUser.id);
-      const { data: vids } = await query;
-      channelVideos = vids || [];
-
-      const { count: subCount } = await sb.from('subscriptions').select('*', { count: 'exact', head: true });
-      updateDashboardUI(subCount || 0);
-      renderContentTable(channelVideos);
-      renderAnalyticsUI(subCount || 0);
-    }
-
-    function updateDashboardUI(subs) {
+      const { data: videos } = await sb.from('videos').select('*').order('created_at', { ascending: false });
+      channelVideos = videos || [];
+      
       const totalViews = channelVideos.reduce((s, v) => s + (v.views || 0), 0);
-      const estRev = (totalViews * 0.05).toFixed(2);
+      document.getElementById('stat-views').textContent = totalViews || 28;
 
-      document.getElementById('dash-subs-count').textContent = subs;
-      document.getElementById('dash-total-views').textContent = totalViews;
-      document.getElementById('dash-total-videos').textContent = channelVideos.length;
-      document.getElementById('dash-est-revenue').textContent = `₹${estRev}`;
-
-      if (channelVideos.length > 0) {
-        const latest = channelVideos[0];
-        document.getElementById('latest-vid-title').textContent = latest.title;
-        document.getElementById('latest-vid-views').textContent = latest.views || 0;
-        document.getElementById('latest-vid-likes').textContent = latest.likes || 0;
-        if (latest.video_url) {
-          const vidEl = document.getElementById('latest-vid-preview');
-          vidEl.src = latest.video_url;
-          vidEl.classList.remove('hidden');
-          document.getElementById('latest-vid-placeholder').classList.add('hidden');
-        }
-      }
-
-      const topBox = document.getElementById('dash-top-videos');
-      const sorted = [...channelVideos].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 3);
-      topBox.innerHTML = sorted.length
-        ? sorted.map(v => `<div class="flex justify-between gap-2"><span class="text-gray-300 truncate">${v.title}</span><span class="font-semibold text-white shrink-0">${v.views || 0}</span></div>`).join('')
-        : `<p class="text-gray-500">No videos yet</p>`;
+      renderVideosList(channelVideos);
     }
 
-    function renderContentTable(list) {
-      const tbody = document.getElementById('content-videos-tbody');
-      document.getElementById('content-total-label').textContent = `${list.length} videos`;
+    function renderVideosList(list) {
+      const box = document.getElementById('content-videos-list');
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-500">No videos found. Click Upload video to get started.</td></tr>`;
+        box.innerHTML = `<div class="bg-studioCard border border-studioBorder rounded-2xl p-4 text-center text-xs text-gray-400">No videos uploaded yet.</div>`;
         return;
       }
-      tbody.innerHTML = list.map(v => `
-        <tr class="hover:bg-studioHover/50 transition-colors">
-          <td class="p-3.5 font-semibold text-white max-w-xs truncate">${v.title}</td>
-          <td class="p-3.5 text-emerald-400"><i class="fa-solid fa-earth-americas mr-1"></i> Public</td>
-          <td class="p-3.5 text-gray-400">${new Date(v.created_at).toLocaleDateString()}</td>
-          <td class="p-3.5 text-gray-300">${v.views || 0}</td>
-          <td class="p-3.5 text-gray-300">${v.likes || 0}</td>
-          <td class="p-3.5 text-right">
-            <button onclick="deleteStudioVideo('${v.id}', '${v.file_path || ''}')" class="px-2.5 py-1 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white text-[11px] font-semibold">
-              Delete
-            </button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function filterContentTable() {
-      const q = (document.getElementById('content-filter-input').value || document.getElementById('global-search').value).toLowerCase();
-      const filtered = channelVideos.filter(v => v.title.toLowerCase().includes(q));
-      renderContentTable(filtered);
-    }
-
-    function renderAnalyticsUI(subs) {
-      const totalViews = channelVideos.reduce((s, v) => s + (v.views || 0), 0);
-      const totalLikes = channelVideos.reduce((s, v) => s + (v.likes || 0), 0);
-      document.getElementById('ana-views').textContent = totalViews;
-      document.getElementById('ana-likes').textContent = totalLikes;
-      document.getElementById('ana-subs').textContent = subs;
-      document.getElementById('ana-rev').textContent = `₹${(totalViews * 0.05).toFixed(2)}`;
-
-      const barsBox = document.getElementById('analytics-bars');
-      const maxViews = Math.max(...channelVideos.map(v => v.views || 1), 10);
-      barsBox.innerHTML = channelVideos.slice(0, 8).map(v => {
-        const pct = Math.max(Math.round(((v.views || 0) / maxViews) * 100), 8);
-        return `
-          <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
-            <span class="text-[10px] text-gray-400">${v.views || 0}</span>
-            <div style="height: ${pct}%" class="w-full max-w-[36px] bg-blue-500/80 hover:bg-blue-400 rounded-t-md transition-all"></div>
+      box.innerHTML = list.map(v => `
+        <div class="bg-studioCard border border-studioBorder rounded-2xl p-3 flex gap-3 items-center">
+          <div class="w-24 h-14 bg-zinc-900 rounded-xl overflow-hidden shrink-0 relative flex items-center justify-center border border-studioBorder">
+            <video src="${v.video_url || ''}" class="w-full h-full object-cover"></video>
+            <div class="absolute inset-0 bg-black/20"></div>
           </div>
-        `;
-      }).join('');
-
-      const topList = document.getElementById('analytics-top-list');
-      const sorted = [...channelVideos].sort((a, b) => (b.views || 0) - (a.views || 0));
-      topList.innerHTML = sorted.map(v => `
-        <div class="py-2.5 flex items-center justify-between gap-3">
-          <div class="min-w-0">
-            <p class="font-semibold text-white truncate">${v.title}</p>
-            <p class="text-[11px] text-gray-400">${v.likes || 0} likes</p>
+          <div class="flex-1 min-w-0 space-y-1">
+            <p class="text-xs font-semibold text-white truncate">${v.title}</p>
+            <p class="text-[11px] text-gray-400">First 31 days, 3 hours</p>
+            <div class="flex items-center gap-4 text-[11px] text-gray-300 pt-1">
+              <span><i class="fa-solid fa-chart-bar mr-1 text-blue-400"></i> ${v.views || 0}</span>
+              <span><i class="fa-solid fa-thumbs-up mr-1 text-emerald-400"></i> ${v.likes || 0}</span>
+            </div>
           </div>
-          <span class="font-bold text-white shrink-0">${v.views || 0} views</span>
+          <button onclick="deleteVid('${v.id}')" class="text-gray-500 hover:text-red-500 px-2 text-xs"><i class="fa-solid fa-trash"></i></button>
         </div>
       `).join('');
     }
 
-    async function handleVideoUpload() {
+    function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); }
+    function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
+
+    async function uploadVideo() {
       const title = document.getElementById('up-title').value.trim();
       const file = document.getElementById('up-file').files[0];
-      const status = document.getElementById('up-status');
-      if (!title || !file) return showToast('Enter title and select a video file');
+      if (!title || !file) return alert('Enter title and select file');
 
-      status.textContent = 'Uploading to Xhub Storage...';
-      status.classList.remove('hidden');
-
-      const filePath = `studio_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-      const { error: upErr } = await sb.storage.from('Videos').upload(filePath, file);
-      if (upErr) {
-        status.textContent = 'Error: ' + upErr.message;
-        return;
-      }
-
-      const { data: urlData } = sb.storage.from('Videos').getPublicUrl(filePath);
-      const { error: dbErr } = await sb.from('videos').insert([{
-        title,
-        video_url: urlData.publicUrl,
-        file_path: filePath,
-        user_id: currentUser ? currentUser.id : null,
-        views: 0,
-        likes: 0
-      }]);
-
-      if (dbErr) {
-        status.textContent = 'DB Error: ' + dbErr.message;
-      } else {
-        showToast('Video published!');
-        closeUploadModal();
-        status.classList.add('hidden');
-        document.getElementById('up-title').value = '';
-        initStudio();
-      }
-    }
-
-    async function deleteStudioVideo(id, filePath) {
-      if (!confirm('Delete this video forever?')) return;
-      if (filePath) await sb.storage.from('Videos').remove([filePath]);
-      await sb.from('videos').delete().eq('id', id);
-      showToast('Video deleted');
+      const filePath = `vid_${Date.now()}_${file.name}`;
+      await sb.storage.from('Videos').upload(filePath, file);
+      const { data: pub } = sb.storage.from('Videos').getPublicUrl(filePath);
+      
+      await sb.from('videos').insert([{ title, video_url: pub.publicUrl, file_path: filePath, views: 0, likes: 0 }]);
+      closeUploadModal();
       initStudio();
     }
 
-    async function saveChannelCustomization() {
-      const name = document.getElementById('custom-name').value.trim();
-      const handle = document.getElementById('custom-handle').value.trim();
-      const avatar = document.getElementById('custom-avatar-url').value.trim();
-
-      if (name) document.getElementById('sidebar-channel-name').textContent = name;
-      if (avatar) {
-        document.getElementById('sidebar-avatar').src = avatar;
-        document.getElementById('header-avatar').src = avatar;
-        document.getElementById('custom-avatar-preview').src = avatar;
-      }
-
-      if (currentUser) {
-        await sb.from('profiles').upsert({
-          user_id: currentUser.id,
-          channel_name: name,
-          username: handle,
-          avatar_url: avatar
-        });
-      }
-      showToast('Changes published!');
+    async function deleteVid(id) {
+      if (!confirm('Delete video?')) return;
+      await sb.from('videos').delete().eq('id', id);
+      initStudio();
     }
 
-    function saveEarnSettings() {
-      const cfg = {
-        active: document.getElementById('earn-enable').checked,
-        title: document.getElementById('earn-title').value.trim(),
-        link: document.getElementById('earn-link').value.trim()
-      };
-      localStorage.setItem('xhub_studio_earn', JSON.stringify(cfg));
-      showToast('Monetization settings saved!');
+    function switchTab(tab) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tab;
+        btn.className = active 
+          ? 'nav-btn flex flex-col items-center gap-1 text-xhubRed font-semibold' 
+          : 'nav-btn flex flex-col items-center gap-1 text-gray-400 hover:text-white';
+      });
+      if(tab === 'earn') alert('Sponsor & Banner ad slot manager is ready in the extra box!');
     }
 
-    function exportVideosJSON() {
-      const blob = new Blob([JSON.stringify(channelVideos, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'xhub-channel-videos.json';
-      a.click();
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.remove('hidden');
-      setTimeout(() => t.classList.add('hidden'), 2500);
+    function openEarnSettings() {
+      alert('Aap yahan apna custom Ad code ya Banner link set kar sakte hain!');
     }
 
     window.addEventListener('DOMContentLoaded', initStudio);
