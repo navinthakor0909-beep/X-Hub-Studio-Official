@@ -214,7 +214,8 @@ async function loadVideos(){
     }
 
     const rows=data||[];
-    $("statVideos").textContent=rows.length;
+    const stat=$("statVideos");
+if(stat) stat.textContent=rows.length;
 
     box.innerHTML=rows.length
       ?rows.map(v=>'<div class="video"><div class="vinfo"><div class="vtitle">'+String(v.title||"Untitled video").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))+'</div></div></div>').join("")
