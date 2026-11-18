@@ -39,7 +39,7 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 .video{display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--line)}.video:last-child{border-bottom:0}
 .thumb{width:145px;aspect-ratio:16/9;height:auto;flex-shrink:0;border-radius:10px;background:#29292e;display:grid;place-items:center;color:var(--blue);font-size:25px}
 .vinfo{flex:1;min-width:0}.vtitle{font-weight:700;overflow-wrap:anywhere}.vdate{font-size:12px;color:var(--muted);margin-top:6px}
-.actions{display:flex;gap:7px}.iconbtn{padding:9px 11px;background:#252529;border:1px solid var(--line);color:var(--ink)}.empty{padding:30px;text-align:center;color:var(--muted)}
+.actions{display:flex;gap:7px;position:relative}.menuWrap{position:relative;flex-shrink:0}.menuTrigger{padding:8px 10px;background:#252529;border:1px solid var(--line);color:var(--ink);font-size:20px;line-height:1}.videoMenu{position:absolute;right:0;top:42px;z-index:20;min-width:150px;background:#202024;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 8px 24px #0008}.videoMenu button{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);padding:11px;border-radius:8px}.videoMenu button:hover{background:#333}.videoMenu .menuDelete{color:#ff6878}.empty{padding:30px;text-align:center;color:var(--muted)}
 .profile-row{display:grid;grid-template-columns:180px 1fr;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
 #notice{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#182033;color:#fff;padding:12px 17px;border-radius:12px;z-index:10;display:none;max-width:90vw}
 .mobile-nav{display:none}
@@ -152,7 +152,7 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 const SUPABASE_URL="https://scczyiossqleuzidplxx.supabase.co";
 const SUPABASE_KEY="sb_publishable_rvecUf_3ZkeAxnbAJ8iiiw_2mItGPT2";
 const BUCKET="Videos";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 let currentUser=null;let selectedVideo=null;
 const $=id=>document.getElementById(id);
 function notice(message){const n=$("notice");n.textContent=message;n.style.display="block";clearTimeout(notice.timer);notice.timer=setTimeout(()=>n.style.display="none",3500)}
@@ -162,8 +162,7 @@ async function showApp(user){
  $("headerAvatar").textContent=initial;$("bigAvatar").textContent=initial;
  $("creatorName").textContent=email.split("@")[0];$("profileName").textContent=email.split("@")[0];
  $("profileEmail").textContent=email;$("profileId").textContent=user.id;
- await loadVideos();
- await loadChannelAnalytics();
+ void Promise.all([loadVideos(),loadChannelAnalytics()]);
 }
 function showLogin(){$("app").classList.add("hidden");$("loginWrap").classList.remove("hidden");currentUser=null}
 function openPage(page){
@@ -173,6 +172,7 @@ function openPage(page){
  if(page==="analytics")loadChannelAnalytics();
 }
 document.querySelectorAll("[data-page]").forEach(n=>n.addEventListener("click",()=>openPage(n.dataset.page)));
+document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden")));
 
 $("headerAvatar").addEventListener("click",()=>openPage("profile"));
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
@@ -199,13 +199,20 @@ async function loadVideos(){
   const date=document.createElement("div");date.className="vdate";date.textContent=v.created_at?new Date(v.created_at).toLocaleString():"";
   info.append(title,date);
   const actions=document.createElement("div");actions.className="actions";
-  const edit=document.createElement("button");edit.className="iconbtn";edit.type="button";edit.title="Edit title";edit.textContent="✏️";edit.addEventListener("click",()=>editTitle(v));
-  const del=document.createElement("button");del.className="danger";del.type="button";del.title="Delete video";del.textContent="Delete";del.addEventListener("click",()=>deleteVideo(v,del));
-  actions.append(edit,del);item.append(thumb,info,actions);item.addEventListener("click",()=>openVideoDetail(v));$("videoList").append(item);
+  const menuWrap=document.createElement("div");menuWrap.className="menuWrap";
+  const menuTrigger=document.createElement("button");menuTrigger.className="menuTrigger";menuTrigger.type="button";menuTrigger.title="Video options";menuTrigger.textContent="⋮";
+  const menu=document.createElement("div");menu.className="videoMenu hidden";
+  const edit=document.createElement("button");edit.type="button";edit.textContent="Video edit";edit.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");editTitle(v)});
+  const del=document.createElement("button");del.type="button";del.className="menuDelete";del.textContent="Delete video";del.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");deleteVideo(v,del)});
+  menu.append(edit,del);menuWrap.append(menuTrigger,menu);
+  menuTrigger.addEventListener("click",e=>{e.stopPropagation();document.querySelectorAll(".videoMenu").forEach(m=>{if(m!==menu)m.classList.add("hidden")});menu.classList.toggle("hidden")});
+  menu.addEventListener("click",e=>e.stopPropagation());
+  actions.append(menuWrap);item.append(thumb,info,actions);item.addEventListener("click",()=>openVideoDetail(v));$("videoList").append(item);
  });
 }
 function openVideoDetail(v){selectedVideo=v;openPage("videoDetail");const t=$("detailThumbnail");t.innerHTML="";if(v.thumbnail_url){const im=document.createElement("img");im.src=v.thumbnail_url;im.style.cssText="width:100%;height:100%;object-fit:contain";t.append(im)}else t.textContent="▶";$("detailTitle").textContent=v.title||"Untitled video";$("detailDate").textContent=v.created_at?"Uploaded "+new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}
-$("detailBack").addEventListener("click",()=>openPage("content"));$("performanceBack").addEventListener("click",()=>openPage("videoDetail"));$("watchOnSite").addEventListener("click",()=>window.open("https://xhub-xxx.pages.dev","_blank"));$("videoPerformance").addEventListener("click",async()=>{if(!selectedVideo)return;openPage("videoPerformance");const {data}=await sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id).eq("video_id",selectedVideo.id).order("created_at",{ascending:true});const ev=data||[];const vc=ev.filter(x=>x.event_type==="view");const sec=ev.filter(x=>x.event_type==="watch_time").reduce((a,x)=>a+(Number(x.watch_seconds)||0),0);$("oneVideoViews").textContent=(vc.length||Number(selectedVideo.views)||0).toLocaleString();$("oneVideoWatch").textContent=sec>=3600?(sec/3600).toFixed(1)+" hr":Math.floor(sec/60)+" min";const counts={};vc.forEach(x=>{const k=new Date(x.created_at).toLocaleDateString();counts[k]=(counts[k]||0)+1});const max=Math.max(1,...Object.values(counts));$("oneVideoGraph").innerHTML=Object.entries(counts).map(([d,n])=>`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>${d}</span><b>${n}</b></div><div style="height:7px;background:#333;border-radius:8px"><div style="height:7px;width:${n/max*100}%;background:#ef233c;border-radius:8px"></div></div></div>`).join("")||"No view history recorded yet.";});
+$("detailBack").addEventListener("click",()=>openPage("content"));$("performanceBack").addEventListener("click",()=>openPage("videoDetail"));$("watchOnSite").addEventListener("click",()=>window.open("https://xhub-xxx.pages.dev","_blank"));async function openVideoPerformance(v){selectedVideo=v;openPage("videoPerformance");const {data}=await sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id).eq("video_id",selectedVideo.id).order("created_at",{ascending:true});const ev=data||[];const vc=ev.filter(x=>x.event_type==="view");const sec=ev.filter(x=>x.event_type==="watch_time").reduce((a,x)=>a+(Number(x.watch_seconds)||0),0);$("oneVideoViews").textContent=(vc.length||Number(selectedVideo.views)||0).toLocaleString();$("oneVideoWatch").textContent=sec>=3600?(sec/3600).toFixed(1)+" hr":Math.floor(sec/60)+" min";const counts={};vc.forEach(x=>{const k=new Date(x.created_at).toLocaleDateString();counts[k]=(counts[k]||0)+1});const max=Math.max(1,...Object.values(counts));$("oneVideoGraph").innerHTML=Object.entries(counts).map(([d,n])=>`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>${d}</span><b>${n}</b></div><div style="height:7px;background:#333;border-radius:8px"><div style="height:7px;width:${n/max*100}%;background:#ef233c;border-radius:8px"></div></div></div>`).join("")||"No view history recorded yet.";}
+$("videoPerformance").addEventListener("click",()=>{if(selectedVideo)openVideoPerformance(selectedVideo)});
 $("uploadShortcut").addEventListener("click",()=>{window.open("https://xhub-xxx.pages.dev","_blank")});
 async function loadChannelAnalytics(){
  if(!currentUser)return;
@@ -247,7 +254,7 @@ async function loadChannelAnalytics(){
   const info=document.createElement("div");info.className="vinfo";
   const title=document.createElement("div");title.className="vtitle";title.textContent=v.title||"Untitled video";
   const meta=document.createElement("div");meta.className="vdate";meta.textContent=`${Number(v.views||0).toLocaleString()} views · ${Number(v.likes||0).toLocaleString()} likes · ${v.created_at?new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}`;
-  info.append(title,meta);row.append(thumb,info);list.append(row);
+  info.append(title,meta);row.append(thumb,info);row.style.cursor="pointer";row.title="Tap to view this video analytics";row.addEventListener("click",()=>openVideoPerformance(v));list.append(row);
  });
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
