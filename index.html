@@ -418,6 +418,7 @@ sb.auth.onAuthStateChange((event, session) => {
 
   if (data.session?.user) {
     showApp(data.session.user);
+   console.log("SESSION ERROR:", error, "SESSION DATA:", data);
   } else {
     showLogin();
   }
