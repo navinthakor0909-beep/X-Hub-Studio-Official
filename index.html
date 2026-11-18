@@ -391,6 +391,7 @@ $("uploadForm").addEventListener("submit",async e=>{
 });
 $("refreshBtn").addEventListener("click",loadVideos);
 let authReady = false;
+
 sb.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_OUT") {
     currentUser = null;
@@ -406,9 +407,11 @@ sb.auth.onAuthStateChange((event, session) => {
 
 (async () => {
   const { data, error } = await sb.auth.getSession();
- console.log("SESSION CHECK:", data.session);
 
   authReady = true;
+
+  console.log("SESSION ERROR:", error);
+  console.log("SESSION DATA:", data);
 
   if (error) {
     $("loginError").textContent = error.message;
@@ -418,7 +421,6 @@ sb.auth.onAuthStateChange((event, session) => {
 
   if (data.session?.user) {
     showApp(data.session.user);
-   console.log("SESSION ERROR:", error, "SESSION DATA:", data);
   } else {
     showLogin();
   }
