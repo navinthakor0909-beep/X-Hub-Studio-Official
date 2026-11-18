@@ -390,11 +390,7 @@ $("uploadForm").addEventListener("submit",async e=>{
  $("uploadForm").reset();notice("Video uploaded successfully.");btn.disabled=false;btn.textContent="Upload";loadVideos();
 });
 $("refreshBtn").addEventListener("click",loadVideos);
-let authReady=false;
-
-
 let authReady = false;
-
 sb.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_OUT") {
     currentUser = null;
