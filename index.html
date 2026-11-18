@@ -156,6 +156,40 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSe
 let currentUser=null;let selectedVideo=null;
 const $=id=>document.getElementById(id);
 function notice(message){const n=$("notice");n.textContent=message;n.style.display="block";clearTimeout(notice.timer);notice.timer=setTimeout(()=>n.style.display="none",3500)}
+function thumbUrl(v){
+ const raw=v?.thumbnail_url||v?.thumbnail_path||v?.thumbnail||"";
+ if(!raw)return "";
+ if(/^https?:\/\//i.test(raw))return raw;
+ return sb.storage.from(BUCKET).getPublicUrl(String(raw).replace(/^\/+/,"")).data.publicUrl;
+}
+function attachThumbnail(box,v,fit="cover"){
+ const url=thumbUrl(v);box.innerHTML="";
+ if(!url){box.textContent="▶";return;}
+ const img=document.createElement("img");img.loading="lazy";img.decoding="async";img.alt="Video thumbnail";
+ img.src=url;img.style.cssText=`width:100%;height:100%;object-fit:${fit};border-radius:10px`;
+ img.onerror=()=>{box.innerHTML="▶";};box.appendChild(img);
+}
+function videoCacheKey(){return "xhub_studio_videos_"+(currentUser?.id||"");}
+function renderVideoList(data){
+ const box=$("videoList");box.innerHTML="";
+ if(!data?.length){box.innerHTML='<div class="empty">No videos uploaded yet.</div>';return;}
+ data.forEach(v=>{
+  const item=document.createElement("div");item.className="video";
+  const thumb=document.createElement("div");thumb.className="thumb";attachThumbnail(thumb,v);
+  const info=document.createElement("div");info.className="vinfo";
+  const title=document.createElement("div");title.className="vtitle";title.textContent=v.title||"Untitled video";
+  const date=document.createElement("div");date.className="vdate";date.textContent=v.created_at?new Date(v.created_at).toLocaleString():"";info.append(title,date);
+  const actions=document.createElement("div");actions.className="actions";
+  const menuWrap=document.createElement("div");menuWrap.className="menuWrap";
+  const trigger=document.createElement("button");trigger.className="menuTrigger";trigger.type="button";trigger.title="Video options";trigger.textContent="⋮";
+  const menu=document.createElement("div");menu.className="videoMenu hidden";
+  const edit=document.createElement("button");edit.type="button";edit.textContent="Video edit";edit.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");editTitle(v)});
+  const del=document.createElement("button");del.type="button";del.className="menuDelete";del.textContent="Delete video";del.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");deleteVideo(v,del)});
+  menu.append(edit,del);menuWrap.append(trigger,menu);
+  trigger.addEventListener("click",e=>{e.stopPropagation();document.querySelectorAll(".videoMenu").forEach(m=>{if(m!==menu)m.classList.add("hidden")});menu.classList.toggle("hidden")});
+  menu.addEventListener("click",e=>e.stopPropagation());actions.append(menuWrap);item.append(thumb,info,actions);item.addEventListener("click",()=>openVideoDetail(v));box.append(item);
+ });
+}
 async function showApp(user){
  currentUser=user;$("loginWrap").classList.add("hidden");$("app").classList.remove("hidden");
  const email=user.email||"Creator";const initial=email.charAt(0).toUpperCase();
@@ -185,32 +219,17 @@ $("loginForm").addEventListener("submit",async e=>{
 async function logout(){const {error}=await sb.auth.signOut();if(error){notice(error.message);return}showLogin()}
 $("settingsLogout").addEventListener("click",logout);
 async function loadVideos(){
- if(!currentUser)return;$("videoList").innerHTML='<div class="empty">Loading videos...</div>';
+ if(!currentUser)return;
+ const box=$("videoList");
+ let cached=[];try{cached=JSON.parse(localStorage.getItem(videoCacheKey())||"[]")}catch{}
+ if(cached.length){renderVideoList(cached);box.dataset.cached="1";}else{box.innerHTML='<div class="empty">Loading videos…</div>';box.dataset.cached="0";}
  const {data,error}=await sb.from("videos").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false});
- if(error){$("videoList").innerHTML='<div class="empty">Could not load videos: '+escapeHtml(error.message)+'</div>';return}
- $("statVideos").textContent=data.length;
- if(!data.length){$("videoList").innerHTML='<div class="empty">No videos uploaded yet.</div>';return}
- $("videoList").innerHTML="";
- data.forEach(v=>{
-  const item=document.createElement("div");item.className="video";
-  const thumb=document.createElement("div");thumb.className="thumb";if(v.thumbnail_url){const img=document.createElement("img");img.src=v.thumbnail_url;img.alt="";img.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:10px";thumb.appendChild(img)}else{thumb.textContent="▶";}
-  const info=document.createElement("div");info.className="vinfo";
-  const title=document.createElement("div");title.className="vtitle";title.textContent=v.title||"Untitled video";
-  const date=document.createElement("div");date.className="vdate";date.textContent=v.created_at?new Date(v.created_at).toLocaleString():"";
-  info.append(title,date);
-  const actions=document.createElement("div");actions.className="actions";
-  const menuWrap=document.createElement("div");menuWrap.className="menuWrap";
-  const menuTrigger=document.createElement("button");menuTrigger.className="menuTrigger";menuTrigger.type="button";menuTrigger.title="Video options";menuTrigger.textContent="⋮";
-  const menu=document.createElement("div");menu.className="videoMenu hidden";
-  const edit=document.createElement("button");edit.type="button";edit.textContent="Video edit";edit.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");editTitle(v)});
-  const del=document.createElement("button");del.type="button";del.className="menuDelete";del.textContent="Delete video";del.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");deleteVideo(v,del)});
-  menu.append(edit,del);menuWrap.append(menuTrigger,menu);
-  menuTrigger.addEventListener("click",e=>{e.stopPropagation();document.querySelectorAll(".videoMenu").forEach(m=>{if(m!==menu)m.classList.add("hidden")});menu.classList.toggle("hidden")});
-  menu.addEventListener("click",e=>e.stopPropagation());
-  actions.append(menuWrap);item.append(thumb,info,actions);item.addEventListener("click",()=>openVideoDetail(v));$("videoList").append(item);
- });
+ if(error){if(!cached.length)box.innerHTML='<div class="empty">Videos load failed. <button class="secondary" id="retryVideos">Retry</button></div>';const retry=$("retryVideos");if(retry)retry.onclick=loadVideos;notice("Videos load failed. Please retry.");return;}
+ const videos=data||[];$("statVideos").textContent=videos.length;
+ try{localStorage.setItem(videoCacheKey(),JSON.stringify(videos))}catch{}
+ renderVideoList(videos);
 }
-function openVideoDetail(v){selectedVideo=v;openPage("videoDetail");const t=$("detailThumbnail");t.innerHTML="";if(v.thumbnail_url){const im=document.createElement("img");im.src=v.thumbnail_url;im.style.cssText="width:100%;height:100%;object-fit:contain";t.append(im)}else t.textContent="▶";$("detailTitle").textContent=v.title||"Untitled video";$("detailDate").textContent=v.created_at?"Uploaded "+new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}
+function openVideoDetail(v){selectedVideo=v;openPage("videoDetail");const t=$("detailThumbnail");attachThumbnail(t,v,"contain");$("detailTitle").textContent=v.title||"Untitled video";$("detailDate").textContent=v.created_at?"Uploaded "+new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}
 $("detailBack").addEventListener("click",()=>openPage("content"));$("performanceBack").addEventListener("click",()=>openPage("videoDetail"));$("watchOnSite").addEventListener("click",()=>window.open("https://xhub-xxx.pages.dev","_blank"));async function openVideoPerformance(v){selectedVideo=v;openPage("videoPerformance");const {data}=await sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id).eq("video_id",selectedVideo.id).order("created_at",{ascending:true});const ev=data||[];const vc=ev.filter(x=>x.event_type==="view");const sec=ev.filter(x=>x.event_type==="watch_time").reduce((a,x)=>a+(Number(x.watch_seconds)||0),0);$("oneVideoViews").textContent=(vc.length||Number(selectedVideo.views)||0).toLocaleString();$("oneVideoWatch").textContent=sec>=3600?(sec/3600).toFixed(1)+" hr":Math.floor(sec/60)+" min";const counts={};vc.forEach(x=>{const k=new Date(x.created_at).toLocaleDateString();counts[k]=(counts[k]||0)+1});const max=Math.max(1,...Object.values(counts));$("oneVideoGraph").innerHTML=Object.entries(counts).map(([d,n])=>`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>${d}</span><b>${n}</b></div><div style="height:7px;background:#333;border-radius:8px"><div style="height:7px;width:${n/max*100}%;background:#ef233c;border-radius:8px"></div></div></div>`).join("")||"No view history recorded yet.";}
 $("videoPerformance").addEventListener("click",()=>{if(selectedVideo)openVideoPerformance(selectedVideo)});
 $("uploadShortcut").addEventListener("click",()=>{window.open("https://xhub-xxx.pages.dev","_blank")});
@@ -250,7 +269,7 @@ async function loadChannelAnalytics(){
  videos.forEach(v=>{
   const row=document.createElement("div");row.className="video";
   const thumb=document.createElement("div");thumb.className="thumb";
-  if(v.thumbnail_url){const img=document.createElement("img");img.src=v.thumbnail_url;img.alt="";img.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:10px";thumb.appendChild(img);}else thumb.textContent="▶";
+  attachThumbnail(thumb,v);
   const info=document.createElement("div");info.className="vinfo";
   const title=document.createElement("div");title.className="vtitle";title.textContent=v.title||"Untitled video";
   const meta=document.createElement("div");meta.className="vdate";meta.textContent=`${Number(v.views||0).toLocaleString()} views · ${Number(v.likes||0).toLocaleString()} likes · ${v.created_at?new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}`;
