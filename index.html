@@ -189,6 +189,7 @@ async function loadVideos(){
  $("videoList").innerHTML='<div class="empty">Loading videos...</div>';
  const {data,error}=await sb.from("videos").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(100);
  if(error){$("videoList").textContent="Could not load videos: "+error.message;return;}
+ console.log("VIDEOS DATA:",data,"ERROR:",error);
  const videoRows=data||[];
  $("statVideos").textContent=videoRows.length;
  $("videoList").innerHTML=videoRows.length?videoRows.map(v=>'<div class="video"><div class="vinfo"><div class="vtitle">'+escapeHtml(v.title||"Untitled video")+'</div></div></div>').join(""):'<div class="empty">No videos uploaded yet.</div>';
