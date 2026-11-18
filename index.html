@@ -363,35 +363,40 @@ $("uploadForm").addEventListener("submit",async e=>{
 $("refreshBtn").addEventListener("click",loadVideos);
 let authReady=false;
 
-sb.auth.onAuthStateChange((event,session)=>{
-  if(session?.user){
-    currentUser=session.user;
-    if(authReady && $("app").classList.contains("hidden")){
-      showApp(session.user);
-    }
-  }else if(event==="SIGNED_OUT"){
-    currentUser=null;
-    showLogin();
-  }
-});
 
-(async()=>{
-  const {data,error}=await sb.auth.getSession();
+let authReady = false;
 
-  authReady=true;
-
-  if(error){
-    $("loginError").textContent=error.message;
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT") {
+    currentUser = null;
     showLogin();
     return;
   }
 
-  if(data.session?.user){
+  if (session?.user && authReady) {
+    currentUser = session.user;
+    showApp(session.user);
+  }
+});
+
+(async () => {
+  const { data, error } = await sb.auth.getSession();
+
+  authReady = true;
+
+  if (error) {
+    $("loginError").textContent = error.message;
+    showLogin();
+    return;
+  }
+
+  if (data.session?.user) {
     showApp(data.session.user);
-  }else{
+  } else {
     showLogin();
   }
 })();
+
 </script>
 </body>
 </html>
