@@ -177,12 +177,41 @@ document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").fo
 
 $("headerAvatar").addEventListener("click",()=>openPage("profile"));
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
-$("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();$("loginError").textContent="";$("loginBtn").disabled=true;$("loginBtn").textContent="Signing in...";
- const {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
- $("loginBtn").disabled=false;$("loginBtn").textContent="Login";
- if(error){$("loginError").textContent=error.message;return}showApp(data.user);
+
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const errorBox = $("loginError");
+  const btn = $("loginBtn");
+
+  errorBox.textContent = "";
+  btn.disabled = true;
+  btn.textContent = "Signing in...";
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    if (error) {
+      errorBox.textContent = error.message;
+      return;
+    }
+
+    if (data.user) {
+      showApp(data.user);
+    } else {
+      errorBox.textContent = "Login failed. Please try again.";
+    }
+  } catch (err) {
+    errorBox.textContent = err.message || "Login failed.";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Login";
+  }
 });
+
 async function logout(){const {error}=await sb.auth.signOut();if(error){notice(error.message);return}showLogin()}
 $("settingsLogout").addEventListener("click",logout);
 
