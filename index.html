@@ -54,6 +54,14 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
  .mobile-nav button.active{color:var(--blue)}.mobile-nav .ico{font-size:21px}
  .profile-row{grid-template-columns:1fr;gap:6px}
 }
+
+.upload-panel{background:linear-gradient(145deg,#1b1b20,#121216);border:1px solid #34343c;border-radius:18px;padding:18px;margin:0 0 18px}
+.upload-help{font-size:12px;color:#a1a1aa;margin:8px 0 14px}
+.file-pick{display:block;padding:18px;border:1px dashed #555560;border-radius:14px;background:#111114;text-align:center;color:#ddd;margin:12px 0}
+.file-pick input{margin-top:12px;background:transparent;border:0;padding:4px}
+.profile-logo{width:96px;height:96px;border-radius:50%;object-fit:cover;background:#29292e;border:2px solid #444}
+.profile-tools{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:760px){.upload-panel{padding:14px}}
 </style>
 </head>
 <body>
@@ -101,11 +109,14 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
    </section>
    <section id="contentPage" class="hidden">
     <div class="topline"><div><h1>Manage Your Videos</h1></div></div>
-    <div class="panel hidden"><h2>Upload video</h2><form id="uploadForm" class="uploadrow">
-     <div><label for="videoTitle">Video title</label><input id="videoTitle" maxlength="150" required placeholder="Enter video title"></div>
-     <div><label for="videoFile">Video file</label><input id="videoFile" type="file" accept="video/*" required></div>
-     <button class="primary" id="uploadBtn" type="submit">Upload</button>
-    </form><p class="muted" style="font-size:12px">Upload availability depends on your Supabase Storage settings.</p></div>
+    <div class="upload-panel">
+     <h2>Upload a new video</h2><p class="upload-help">Choose a video and add a clear title for your channel.</p>
+     <form id="uploadForm">
+      <label for="videoTitle">Video title</label><input id="videoTitle" maxlength="150" required placeholder="Give your video a title">
+      <label class="file-pick" for="videoFile"><strong>＋ Select video file</strong><div class="upload-help">Choose a video from your device</div><input id="videoFile" type="file" accept="video/*" required></label>
+      <button class="primary" id="uploadBtn" type="submit" style="width:100%">Upload video</button>
+     </form>
+    </div>
     <div id="statVideos" style="display:none">0</div>
     <div class="panel"><h2 style="margin-bottom:12px">Your videos</h2><div id="videoList"><div class="empty">Loading videos...</div></div></div>
    </section>
@@ -132,12 +143,23 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
     <div class="panel"><h2>Earnings coming soon</h2><p class="muted">Earning totals and payout details will appear here after a secure earnings data source is connected. No estimated or made-up balance is shown.</p></div>
    </section>
    <section id="profilePage" class="hidden">
-    <div class="topline"><div><h1>Creator Profile</h1><div class="muted">Your signed-in account</div></div></div>
-    <div class="panel"><div class="profile-row"><strong>Creator name</strong><span id="profileName">X Hub Creator</span></div><div class="profile-row"><strong>Email</strong><span id="profileEmail">—</span></div><div class="profile-row"><strong>Account ID</strong><span id="profileId" style="overflow-wrap:anywhere">—</span></div></div>
-   </section>
+     <div class="topline"><div><h1>Creator Profile</h1><div class="muted">Manage your public channel identity</div></div><button class="secondary" id="profileSettingsBtn" type="button">⚙</button></div>
+     <div class="panel">
+      <div class="profile-head"><img class="profile-logo" id="profileLogoPreview" alt="Channel logo"><div><div class="profile-name" id="profileName">Creator name</div><div class="muted" id="profileUsername">@username</div></div></div>
+      <div class="profile-tools"><button class="primary" id="editProfileBtn" type="button">Edit profile</button><button class="secondary" id="profileSettingsBtn2" type="button">⚙ Settings</button></div>
+     </div>
+     <div class="panel hidden" id="profileEditPanel"><h2>Edit profile</h2>
+      <form id="profileEditForm">
+       <label for="profileNameInput">Channel name</label><input id="profileNameInput" maxlength="60" required placeholder="Your channel name">
+       <label for="profileUsernameInput">Username</label><input id="profileUsernameInput" maxlength="30" required placeholder="yourusername">
+       <label for="profileLogoInput">Channel logo</label><input id="profileLogoInput" type="file" accept="image/*">
+       <div class="profile-tools" style="margin-top:16px"><button class="primary" id="saveProfileBtn" type="submit">Save profile</button><button class="secondary" id="cancelProfileEdit" type="button">Cancel</button></div>
+      </form>
+     </div>
+    </section>
    <section id="settingsPage" class="hidden">
     <div class="topline"><div><h1>Settings</h1><div class="muted">Studio account settings</div></div></div>
-    <div class="panel"><h2>Account</h2><p class="muted">Your login session is saved on this device. Use Logout only when you want to sign out.</p><button class="secondary" id="settingsLogout">Logout</button></div>
+    <div class="panel"><h2>Account settings</h2><p class="muted">Sign out of this Studio account from here.</p><button class="danger" id="settingsLogout">Logout</button></div>
    </section>
   </main>
  </div>
@@ -153,16 +175,18 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 const SUPABASE_URL="https://scczyiossqleuzidplxx.supabase.co";
 const SUPABASE_KEY="sb_publishable_rvecUf_3ZkeAxnbAJ8iiiw_2mItGPT2";
 const BUCKET="Videos";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage,storageKey:"xhub-studio-auth-v1"}});
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 let currentUser=null;let selectedVideo=null;
 const $=id=>document.getElementById(id);
 function notice(message){const n=$("notice");n.textContent=message;n.style.display="block";clearTimeout(notice.timer);notice.timer=setTimeout(()=>n.style.display="none",3500)}
 async function showApp(user){
- currentUser=user;$("loginWrap").classList.add("hidden");$("app").classList.remove("hidden");
- const email=user.email||"Creator";const initial=email.charAt(0).toUpperCase();
- $("headerAvatar").textContent=initial;$("bigAvatar").textContent=initial;
- $("creatorName").textContent=email.split("@")[0];$("profileName").textContent=email.split("@")[0];
- $("profileEmail").textContent=email;$("profileId").textContent=user.id;
+ currentUser=user;
+ $("loginWrap").classList.add("hidden");$("app").classList.remove("hidden");
+ const fallback=(user.email||"Creator").split("@")[0];
+ $("headerAvatar").textContent=fallback.charAt(0).toUpperCase();
+ $("bigAvatar").textContent=fallback.charAt(0).toUpperCase();
+ $("creatorName").textContent=fallback;
+ await loadCreatorProfile();
  void Promise.all([loadVideos(),loadChannelAnalytics()]);
 }
 function showLogin(){$("app").classList.add("hidden");$("loginWrap").classList.remove("hidden");currentUser=null}
@@ -173,43 +197,29 @@ function openPage(page){
  if(page==="analytics")loadChannelAnalytics();
 }
 document.querySelectorAll("[data-page]").forEach(n=>n.addEventListener("click",()=>openPage(n.dataset.page)));
+$("profileSettingsBtn").addEventListener("click",()=>openPage("settings"));
+$("profileSettingsBtn2").addEventListener("click",()=>openPage("settings"));
+$("editProfileBtn").addEventListener("click",()=>{$("profileEditPanel").classList.remove("hidden");});
+$("cancelProfileEdit").addEventListener("click",()=>{$("profileEditPanel").classList.add("hidden");});
+$("profileEditForm").addEventListener("submit",saveCreatorProfile);
+
 document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden")));
 
 $("headerAvatar").addEventListener("click",()=>openPage("profile"));
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
 
-$("loginForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const errorBox = $("loginError");
-  const btn = $("loginBtn");
-
-  errorBox.textContent = "";
-  btn.disabled = true;
-  btn.textContent = "Signing in...";
-
-  try {
-    const { data, error } = await sb.auth.signInWithPassword({
-      email: $("email").value.trim(),
-      password: $("password").value
-    });
-
-    if (error) {
-      errorBox.textContent = error.message;
-      return;
-    }
-
-    if (data.user) {
-      showApp(data.user);
-    } else {
-      errorBox.textContent = "Login failed. Please try again.";
-    }
-  } catch (err) {
-    errorBox.textContent = err.message || "Login failed.";
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Login";
-  }
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();const errorBox=$("loginError"),btn=$("loginBtn");
+ errorBox.textContent="";btn.disabled=true;btn.textContent="Signing in...";
+ try{
+  const {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
+  if(error)throw error;
+  const {data:check,error:checkError}=await sb.auth.getSession();
+  if(checkError)throw checkError;
+  if(!check.session?.user)throw new Error("Login worked, but this browser did not save the session. Allow site data/cookies and try again.");
+  await showApp(check.session.user);
+ }catch(err){errorBox.textContent=err.message||"Login failed.";}
+ finally{btn.disabled=false;btn.textContent="Login";}
 });
 
 async function logout(){const {error}=await sb.auth.signOut();if(error){notice(error.message);return}showLogin()}
@@ -258,60 +268,27 @@ async function loadVideos(){
     }
 
     rows.forEach(v=>{
-      const row=document.createElement("div");
-      row.className="video";
-      row.style.cssText="display:flex;gap:14px;align-items:center;padding:12px 0;cursor:pointer;border-bottom:1px solid #ddd;";
-
-      const thumb=document.createElement("div");
-      thumb.className="thumb";
-      thumb.style.cssText="width:40%;max-width:180px;min-width:110px;aspect-ratio:16/9;flex-shrink:0;overflow:hidden;background:#777;border-radius:10px;display:flex;align-items:center;justify-content:center;";
-
+      const row=document.createElement("div");row.className="video";
+      const thumb=document.createElement("div");thumb.className="thumb";
+      thumb.style.cssText="width:40%;max-width:180px;min-width:110px;aspect-ratio:16/9;flex-shrink:0;overflow:hidden;background:#29292e;border-radius:10px;display:flex;align-items:center;justify-content:center;";
       const imageUrl=v.thumbnail_url||v.thumbnail_path;
-
-      if(imageUrl){
-        const img=document.createElement("img");
-        img.src=imageUrl;
-        img.alt="Video thumbnail";
-        img.style.cssText="width:100%;height:100%;object-fit:cover;";
-        img.onerror=()=>{img.remove();thumb.textContent="▶";};
-        thumb.appendChild(img);
-      }else{
-        thumb.textContent="▶";
-      }
-
-      const info=document.createElement("div");
-      info.className="vinfo";
-      info.style.cssText="flex:1;min-width:0;";
-
-      const title=document.createElement("div");
-      title.className="vtitle";
-      title.textContent=v.title||"Untitled video";
-      title.style.cssText="font-size:16px;font-weight:600;margin-bottom:10px;";
-
-      const meta=document.createElement("div");
-      meta.className="vdate";
-      meta.style.cssText="font-size:13px;color:#777;line-height:1.7;";
-      const date=v.created_at
-        ?new Date(v.created_at).toLocaleString()
-        :"Upload date unavailable";
-
-      meta.textContent=
-        Number(v.views||0).toLocaleString()+" views  ·  "+
-        Number(v.likes||0).toLocaleString()+" likes";
-
-      const upload=document.createElement("div");
-      upload.className="vdate";
-      upload.style.cssText="font-size:12px;color:#888;margin-top:5px;";
-      upload.textContent=date;
-
-      info.append(title,meta,upload);
-      row.append(thumb,info);
-
-      row.addEventListener("click",()=>{
-        openVideoPerformance(v);
-      });
-
-      box.appendChild(row);
+      if(imageUrl){const img=document.createElement("img");img.src=imageUrl;img.alt="Video thumbnail";img.style.cssText="width:100%;height:100%;object-fit:cover";img.onerror=()=>{img.remove();thumb.textContent="▶"};thumb.appendChild(img);}else thumb.textContent="▶";
+      const info=document.createElement("div");info.className="vinfo";
+      const title=document.createElement("div");title.className="vtitle";title.textContent=v.title||"Untitled video";
+      const meta=document.createElement("div");meta.className="vdate";meta.textContent=Number(v.views||0).toLocaleString()+" views · "+Number(v.likes||0).toLocaleString()+" likes";
+      const date=document.createElement("div");date.className="vdate";date.textContent=v.created_at?new Date(v.created_at).toLocaleString():"Upload date unavailable";
+      info.append(title,meta,date);
+      [thumb,title].forEach(el=>el.addEventListener("click",()=>openVideoPerformance(v)));
+      const wrap=document.createElement("div");wrap.className="menuWrap";
+      const trigger=document.createElement("button");trigger.type="button";trigger.className="menuTrigger";trigger.textContent="⋮";trigger.setAttribute("aria-label","Video options");
+      const menu=document.createElement("div");menu.className="videoMenu hidden";
+      const edit=document.createElement("button");edit.type="button";edit.textContent="✎ Edit video";
+      edit.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");editTitle(v);});
+      const del=document.createElement("button");del.type="button";del.className="menuDelete";del.textContent="🗑 Delete video";
+      del.addEventListener("click",e=>{e.stopPropagation();menu.classList.add("hidden");deleteVideo(v,del);});
+      menu.append(edit,del);
+      trigger.addEventListener("click",e=>{e.stopPropagation();document.querySelectorAll(".videoMenu").forEach(m=>{if(m!==menu)m.classList.add("hidden")});menu.classList.toggle("hidden");});
+      wrap.append(trigger,menu);row.append(thumb,info,wrap);box.appendChild(row);
     });
 
   }catch(e){
@@ -323,12 +300,63 @@ async function loadVideos(){
 function openVideoDetail(v){selectedVideo=v;openPage("videoDetail");const t=$("detailThumbnail");t.innerHTML="";if(v.thumbnail_url){const im=document.createElement("img");im.src=v.thumbnail_url;im.style.cssText="width:100%;height:100%;object-fit:contain";im.onerror=()=>{t.innerHTML="▶"};t.append(im)}else t.textContent="▶";$("detailTitle").textContent=v.title||"Untitled video";$("detailDate").textContent=v.created_at?"Uploaded "+new Date(v.created_at).toLocaleDateString():"Upload date unavailable"}
 $("detailBack").addEventListener("click",()=>openPage("content"));$("performanceBack").addEventListener("click",()=>openPage("videoDetail"));$("watchOnSite").addEventListener("click",()=>window.open("https://xhub-xxx.pages.dev","_blank"));async function openVideoPerformance(v){selectedVideo=v;openPage("videoPerformance");const {data}=await sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id).eq("video_id",selectedVideo.id).order("created_at",{ascending:true});const ev=data||[];const vc=ev.filter(x=>x.event_type==="view");const sec=ev.filter(x=>x.event_type==="watch_time").reduce((a,x)=>a+(Number(x.watch_seconds)||0),0);$("oneVideoViews").textContent=(vc.length||Number(selectedVideo.views)||0).toLocaleString();$("oneVideoWatch").textContent=sec>=3600?(sec/3600).toFixed(1)+" hr":Math.floor(sec/60)+" min";const counts={};vc.forEach(x=>{const k=new Date(x.created_at).toLocaleDateString();counts[k]=(counts[k]||0)+1});const max=Math.max(1,...Object.values(counts));$("oneVideoGraph").innerHTML=Object.entries(counts).map(([d,n])=>`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>${d}</span><b>${n}</b></div><div style="height:7px;background:#333;border-radius:8px"><div style="height:7px;width:${n/max*100}%;background:#ef233c;border-radius:8px"></div></div></div>`).join("")||"No view history recorded yet.";}
 $("videoPerformance").addEventListener("click",()=>{if(selectedVideo)openVideoPerformance(selectedVideo)});
-$("uploadShortcut").addEventListener("click",()=>{window.open("https://xhub-xxx.pages.dev","_blank")});
+$("uploadShortcut").addEventListener("click",()=>openPage("content"));
+
+let creatorProfile={channel_name:"",username:"",logo_path:""};
+function avatarPublicUrl(path){
+ if(!path)return "";
+ if(/^https?:\/\//i.test(path))return path;
+ return sb.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+}
+async function loadCreatorProfile(){
+ if(!currentUser)return;
+ const {data,error}=await sb.from("profiles").select("*").eq("user_id",currentUser.id).maybeSingle();
+ if(error){console.warn("Profile load:",error.message);return;}
+ creatorProfile=data||{channel_name:"",username:"",logo_path:""};
+ const fallback=(currentUser.email||"Creator").split("@")[0];
+ const name=creatorProfile.channel_name||fallback;
+ const username=creatorProfile.username||fallback.toLowerCase().replace(/[^a-z0-9_]/g,"");
+ $("profileName").textContent=name;$("profileUsername").textContent="@"+username;
+ $("creatorName").textContent=name;$("profileNameInput").value=name;$("profileUsernameInput").value=username;
+ const url=avatarPublicUrl(creatorProfile.logo_path||creatorProfile.logo_url);
+ if(url){
+  $("profileLogoPreview").src=url;
+  $("bigAvatar").style.backgroundImage=`url("${url}")`;$("bigAvatar").style.backgroundSize="cover";$("bigAvatar").style.backgroundPosition="center";$("bigAvatar").textContent="";
+  $("headerAvatar").style.backgroundImage=`url("${url}")`;$("headerAvatar").style.backgroundSize="cover";$("headerAvatar").style.backgroundPosition="center";$("headerAvatar").textContent="";
+ }else{$("profileLogoPreview").removeAttribute("src");}
+}
+async function saveCreatorProfile(e){
+ e.preventDefault();if(!currentUser)return;
+ const btn=$("saveProfileBtn"),channel_name=$("profileNameInput").value.trim();
+ const username=$("profileUsernameInput").value.trim().replace(/^@/,"").toLowerCase();
+ const file=$("profileLogoInput").files[0];
+ if(!channel_name||!username){notice("Name and username are required.");return;}
+ if(!/^[a-z0-9_]{3,30}$/.test(username)){notice("Username: 3–30 letters, numbers or underscore.");return;}
+ btn.disabled=true;btn.textContent="Saving...";
+ try{
+  let logo_path=creatorProfile.logo_path||"";
+  if(file){
+   if(!file.type.startsWith("image/"))throw new Error("Choose an image file.");
+   const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-zA-Z0-9]/g,"");
+   logo_path=currentUser.id+"/logo_"+Date.now()+"."+ext;
+   const {error:upErr}=await sb.storage.from("avatars").upload(logo_path,file,{upsert:true,contentType:file.type});
+   if(upErr)throw upErr;
+  }
+  const payload={user_id:currentUser.id,channel_name,username,logo_path};
+  const {error}=await sb.from("profiles").upsert(payload,{onConflict:"user_id"});
+  if(error)throw error;
+  creatorProfile={...creatorProfile,...payload};await loadCreatorProfile();
+  $("profileEditPanel").classList.add("hidden");$("profileLogoInput").value="";
+  notice("Profile saved.");
+ }catch(err){notice("Profile save failed: "+(err.message||"Check profiles table and avatars bucket."));}
+ finally{btn.disabled=false;btn.textContent="Save profile";}
+}
+
 async function loadChannelAnalytics(){
  if(!currentUser)return;
 
  const [profileRes,subTotalRes,subGainRes,eventRes,videoRes]=await Promise.all([
-  sb.from("profiles").select("channel_name,logo_url").eq("user_id",currentUser.id).maybeSingle(),
+  sb.from("profiles").select("*").eq("user_id",currentUser.id).maybeSingle(),
   sb.from("subscriptions").select("id",{count:"exact",head:true}).eq("channel_id",currentUser.id),
   sb.from("subscriptions").select("id",{count:"exact",head:true}).eq("channel_id",currentUser.id),
   sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id),
@@ -339,7 +367,7 @@ async function loadChannelAnalytics(){
   if(profileRes.data.logo_url){
    $("bigAvatar").style.backgroundImage=`url("${profileRes.data.logo_url}")`;
    $("bigAvatar").style.backgroundSize="cover";$("bigAvatar").style.backgroundPosition="center";$("bigAvatar").textContent="";
-   $("headerAvatar").style.backgroundImage=`url("${profileRes.data.logo_url}")`;
+   $("headerAvatar").style.backgroundImage=`url("${logoUrl}")`;
    $("headerAvatar").style.backgroundSize="cover";$("headerAvatar").style.backgroundPosition="center";$("headerAvatar").textContent="";
   }
  }
@@ -390,43 +418,19 @@ $("uploadForm").addEventListener("submit",async e=>{
  $("uploadForm").reset();notice("Video uploaded successfully.");btn.disabled=false;btn.textContent="Upload";loadVideos();
 });
 $("refreshBtn").addEventListener("click",loadVideos);
-let authReady = false;
-
-sb.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT") {
-    currentUser = null;
-    showLogin();
-    return;
-  }
-
-  if (session?.user && authReady) {
-    currentUser = session.user;
-    showApp(session.user);
-  }
+let authReady=false;
+sb.auth.onAuthStateChange((event,session)=>{
+ if(event==="SIGNED_OUT"){currentUser=null;showLogin();return;}
+ if(session?.user&&authReady){currentUser=session.user;showApp(session.user);}
 });
-
-(async () => {
-  const { data, error } = await sb.auth.getSession();
-
-  authReady = true;
-
-  console.log("SESSION ERROR:", error);
-  console.log("SESSION DATA:", data);
-
-  if (error) {
-    $("loginError").textContent = error.message;
-    showLogin();
-    return;
-  }
-
-  if (data.session?.user) {
-    showApp(data.session.user);
-    } else {
-    $("loginError").textContent =
-      "Session missing. Saved data: " +
-      (localStorage.getItem("xhub-studio-auth-v1") ? "YES" : "NO");
-    showLogin();
-  }
+(async()=>{
+ try{
+  const {data,error}=await sb.auth.getSession();authReady=true;
+  if(error)throw error;
+  if(data.session?.user)await showApp(data.session.user);else showLogin();
+ }catch(err){
+  authReady=true;$("loginError").textContent="Session check failed: "+(err.message||"Please login again.");showLogin();
+ }
 })();
 
 </script>
