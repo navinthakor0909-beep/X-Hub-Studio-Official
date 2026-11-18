@@ -421,7 +421,10 @@ sb.auth.onAuthStateChange((event, session) => {
 
   if (data.session?.user) {
     showApp(data.session.user);
-  } else {
+    } else {
+    $("loginError").textContent =
+      "Session missing. Saved data: " +
+      (localStorage.getItem("xhub-studio-auth-v1") ? "YES" : "NO");
     showLogin();
   }
 })();
