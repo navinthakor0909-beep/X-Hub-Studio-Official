@@ -406,6 +406,7 @@ sb.auth.onAuthStateChange((event, session) => {
 
 (async () => {
   const { data, error } = await sb.auth.getSession();
+ console.log("SESSION CHECK:", data.session);
 
   authReady = true;
 
