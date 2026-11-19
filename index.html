@@ -50,7 +50,6 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 .drop-or{font-size:12px;color:var(--muted);margin-bottom:14px}
 .choose-vid-btn{display:inline-flex;align-items:center;gap:8px;background:#ff001e;color:#fff;padding:11px 22px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 4px 16px rgba(255,0,30,.28)}
 .choose-vid-btn:hover{background:#e0001a}
-.drop-formats{font-size:12px;color:var(--muted);margin-top:16px}
 .selected-vid-box{margin-top:12px;display:inline-flex;align-items:center;gap:10px;background:#232329;border:1px solid #3a3a44;padding:8px 14px;border-radius:999px;font-size:13px;color:#4ade80;max-width:100%}
 .selected-vid-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
 .remove-vid-x{background:#32323a;color:#f5f5f6;width:24px;height:24px;border-radius:50%;padding:0;display:inline-grid;place-items:center;font-size:13px;font-weight:800;flex-shrink:0}
@@ -191,8 +190,6 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
         <span id="selectedVideoName" class="selected-vid-name"></span>
         <button type="button" id="removeVideoBtn" class="remove-vid-x" title="Remove video">✕</button>
        </div>
-
-       <div class="drop-formats">Supported formats: MP4, MOV, AVI, WebM &bull; Max size: 2GB</div>
       </div>
 
       <!-- Thumbnail Card -->
@@ -304,6 +301,8 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 const SUPABASE_URL="https://scczyiossqleuzidplxx.supabase.co";
 const SUPABASE_KEY="sb_publishable_rvecUf_3ZkeAxnbAJ8iiiw_2mItGPT2";
 const BUCKET="Videos";
+const ACTIVE_PAGE_KEY="xhub-studio-active-page";
+const VALID_PAGES=["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance"];
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
   auth:{
     persistSession:true,
@@ -346,6 +345,13 @@ function resetVideoSelectionUI(){
  $("chooseVideoPrompt").classList.remove("hidden");
 }
 
+function getSavedPage(){
+ const saved = localStorage.getItem(ACTIVE_PAGE_KEY);
+ if(!saved || !VALID_PAGES.includes(saved)) return "dashboard";
+ if(saved === "videoDetail" || saved === "videoPerformance") return "content";
+ return saved;
+}
+
 async function showApp(user){
  if(!user)return;
  const isSameUser=currentUser && currentUser.id===user.id;
@@ -358,6 +364,7 @@ async function showApp(user){
  $("creatorName").textContent=email.split("@")[0];$("profileName").textContent=email.split("@")[0];
  $("profileEmail").textContent=email;$("profileId").textContent=user.id;
  if(!isSameUser){
+  openPage(getSavedPage(), true);
   void Promise.all([loadVideos(),loadChannelAnalytics()]);
  }
 }
@@ -368,7 +375,9 @@ function showLogin(){
  currentUser=null;
 }
 
-function openPage(page){
+function openPage(page, skipSave){
+ if(!VALID_PAGES.includes(page)) page="dashboard";
+ if(!skipSave) localStorage.setItem(ACTIVE_PAGE_KEY, page);
  ["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));
  document.querySelectorAll("[data-page]").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
  if(page==="content")loadVideos();
@@ -485,6 +494,7 @@ async function logout(){
   const {error}=await sb.auth.signOut();
   if(error){notice(error.message);return}
   localStorage.removeItem("xhub-studio-auth-v1");
+  localStorage.removeItem(ACTIVE_PAGE_KEY);
   showLogin();
 }
 $("settingsLogout").addEventListener("click",logout);
