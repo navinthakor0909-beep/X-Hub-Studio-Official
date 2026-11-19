@@ -84,6 +84,34 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 .publish-big-btn:hover{background:#e0001a}
 .publish-big-btn:disabled{opacity:.65;cursor:not-allowed}
 
+/* HEADER PROFILE VIEW & EDIT PHOTO STYLES */
+.hdr-prof-shell{max-width:640px;margin:0 auto}
+.hdr-prof-back-row{margin-bottom:20px}
+.hdr-icon-btn{background:transparent;color:#fff;padding:8px 10px;font-size:24px;line-height:1;border-radius:10px;display:inline-flex;align-items:center;justify-content:center}
+.hdr-icon-btn:hover{background:#1d1d22}
+.hdr-prof-summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 4px 22px}
+.hdr-prof-left{display:flex;align-items:center;gap:16px;min-width:0}
+.hdr-prof-logo{width:76px;height:76px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;font-weight:800;display:grid;place-items:center;flex-shrink:0;overflow:hidden}
+.hdr-prof-name{font-size:22px;font-weight:800;color:#fff;line-height:1.2;word-break:break-word}
+.hdr-prof-handle{font-size:15px;color:#b8b8c2;margin-top:4px;word-break:break-word}
+.hdr-pencil-btn{background:transparent;color:#fff;padding:10px;font-size:22px;line-height:1;border-radius:10px;flex-shrink:0}
+.hdr-pencil-btn:hover{background:#1d1d22}
+.hdr-settings-row{width:100%;background:#141417;border-top:1px solid #26262c;border-bottom:1px solid #26262c;border-left:0;border-right:0;border-radius:0;padding:18px 14px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:17px;font-weight:500}
+.hdr-settings-row:hover{background:#1a1a1f}
+.hdr-settings-left{display:flex;align-items:center;gap:16px}
+.hdr-logout-box{margin-top:16px;background:#141417;border:1px solid #2a2a32;border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+.edit-prof-top{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.edit-prof-title{font-size:20px;font-weight:700;color:#fff;margin:0}
+.edit-avatar-center{display:flex;justify-content:center;margin-bottom:32px}
+.edit-avatar-wrap{position:relative;width:112px;height:112px;border-radius:50%;background:#2b2b30;display:grid;place-items:center;font-size:44px;font-weight:800;color:#fff;cursor:pointer;overflow:hidden;border:2px solid #35353d}
+.edit-camera-badge{position:absolute;inset:0;background:rgba(0,0,0,.38);display:grid;place-items:center;color:#fff;font-size:26px}
+.edit-field-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 4px;border-bottom:1px solid #222228}
+.edit-field-lbl{font-size:14px;color:#a1a1aa;margin-bottom:4px}
+.edit-field-val{font-size:18px;color:#fff;font-weight:500;word-break:break-word}
+.edit-inline-box{margin:10px 4px 16px;background:#141417;border:1px solid #2e2e36;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.edit-inline-actions{display:flex;justify-content:flex-end;gap:8px}
+
 .video{display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--line)}.video:last-child{border-bottom:0}
 .thumb{width:145px;aspect-ratio:16/9;height:auto;flex-shrink:0;border-radius:10px;background:#29292e;display:grid;place-items:center;color:var(--blue);font-size:25px}
 .vinfo{flex:1;min-width:0}.vtitle{font-weight:700;overflow-wrap:anywhere}.vdate{font-size:12px;color:var(--muted);margin-top:6px}
@@ -143,6 +171,82 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
      <div class="stat"><div class="muted">Subscribers gained</div><div class="value" id="subsGainedValue">—</div></div>
     </div>
     <div class="panel" style="margin-top:18px"><h2>Most popular content</h2><div id="popularList"><div class="empty">Loading...</div></div></div>
+   </section>
+
+   <!-- HEADER PROFILE PAGE (PHOTO 2 DESIGN) -->
+   <section id="headerProfilePage" class="hidden">
+    <div class="hdr-prof-shell">
+     <div class="hdr-prof-back-row">
+      <button type="button" class="hdr-icon-btn" id="hdrProfBackBtn" title="Back">←</button>
+     </div>
+     <div class="hdr-prof-summary">
+      <div class="hdr-prof-left">
+       <div class="hdr-prof-logo" id="hdrProfLogo">X</div>
+       <div>
+        <div class="hdr-prof-name" id="hdrProfName">X Hub Creator</div>
+        <div class="hdr-prof-handle" id="hdrProfHandle">@creator</div>
+       </div>
+      </div>
+      <button type="button" class="hdr-pencil-btn" id="hdrProfEditBtn" title="Edit Profile">✎</button>
+     </div>
+     <button type="button" class="hdr-settings-row" id="hdrSettingsToggleBtn">
+      <span class="hdr-settings-left"><span>⚙</span><span>Settings</span></span>
+      <span>›</span>
+     </button>
+     <div class="hdr-logout-box hidden" id="hdrLogoutBox">
+      <span class="muted">Sign out from your creator account</span>
+      <button type="button" class="primary" id="hdrLogoutConfirmBtn">Logout</button>
+     </div>
+    </div>
+   </section>
+
+   <!-- EDIT PROFILE PAGE (PHOTO 1 DESIGN) -->
+   <section id="editHeaderProfilePage" class="hidden">
+    <div class="hdr-prof-shell">
+     <div class="edit-prof-top">
+      <button type="button" class="hdr-icon-btn" id="editProfBackBtn" title="Back">←</button>
+      <h1 class="edit-prof-title">Channel profile</h1>
+     </div>
+     <input id="hdrLogoGalleryInput" type="file" accept="image/*" class="hidden">
+     <div class="edit-avatar-center">
+      <div class="edit-avatar-wrap" id="editAvatarTrigger" title="Change Logo">
+       <span id="editAvatarLetter">X</span>
+       <div class="edit-camera-badge">📷</div>
+      </div>
+     </div>
+
+     <!-- 1. Name + Pencil -->
+     <div class="edit-field-row">
+      <div>
+       <div class="edit-field-lbl">Name</div>
+       <div class="edit-field-val" id="editNameDisplay">X Hub Creator</div>
+      </div>
+      <button type="button" class="hdr-pencil-btn" id="openNameEditBtn" title="Edit Name">✎</button>
+     </div>
+     <div class="edit-inline-box hidden" id="nameEditBox">
+      <input id="nameEditInput" type="text" placeholder="Enter channel name">
+      <div class="edit-inline-actions">
+       <button type="button" class="secondary" id="cancelNameEditBtn">Cancel</button>
+       <button type="button" class="primary" id="saveNameEditBtn">Save</button>
+      </div>
+     </div>
+
+     <!-- 2. Handle + Pencil -->
+     <div class="edit-field-row">
+      <div>
+       <div class="edit-field-lbl">Handle</div>
+       <div class="edit-field-val" id="editHandleDisplay">@creator</div>
+      </div>
+      <button type="button" class="hdr-pencil-btn" id="openHandleEditBtn" title="Edit Handle">✎</button>
+     </div>
+     <div class="edit-inline-box hidden" id="handleEditBox">
+      <input id="handleEditInput" type="text" placeholder="@handle">
+      <div class="edit-inline-actions">
+       <button type="button" class="secondary" id="cancelHandleEditBtn">Cancel</button>
+       <button type="button" class="primary" id="saveHandleEditBtn">Save</button>
+      </div>
+     </div>
+    </div>
    </section>
 
    <!-- NEW UPLOAD PAGE MATCHING REFERENCE DESIGN -->
@@ -302,7 +406,7 @@ const SUPABASE_URL="https://scczyiossqleuzidplxx.supabase.co";
 const SUPABASE_KEY="sb_publishable_rvecUf_3ZkeAxnbAJ8iiiw_2mItGPT2";
 const BUCKET="Videos";
 const ACTIVE_PAGE_KEY="xhub-studio-active-page";
-const VALID_PAGES=["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance"];
+const VALID_PAGES=["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance","headerProfile","editHeaderProfile"];
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
   auth:{
     persistSession:true,
@@ -312,7 +416,8 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
     storageKey:"xhub-studio-auth-v1"
   }
 });
-let currentUser=null;let selectedVideo=null;
+let currentUser=null;let selectedVideo=null;let prevPageBeforeHeaderProfile="dashboard";
+let hdrProfileCache={channel_name:"",username:"",logo_url:""};
 const $=id=>document.getElementById(id);
 function notice(message){const n=$("notice");n.textContent=message;n.style.display="block";clearTimeout(notice.timer);notice.timer=setTimeout(()=>n.style.display="none",3500)}
 
@@ -348,8 +453,53 @@ function resetVideoSelectionUI(){
 function getSavedPage(){
  const saved = localStorage.getItem(ACTIVE_PAGE_KEY);
  if(!saved || !VALID_PAGES.includes(saved)) return "dashboard";
- if(saved === "videoDetail" || saved === "videoPerformance") return "content";
+ if(saved === "videoDetail" || saved === "videoPerformance" || saved === "headerProfile" || saved === "editHeaderProfile") return "dashboard";
  return saved;
+}
+
+function applyProfileVisuals(name, handle, logoUrl){
+ const initial=(name||"X").charAt(0).toUpperCase();
+ $("creatorName").textContent=name;
+ $("profileName").textContent=name;
+ $("hdrProfName").textContent=name;
+ $("hdrProfHandle").textContent=handle;
+ $("editNameDisplay").textContent=name;
+ $("editHandleDisplay").textContent=handle;
+
+ ["headerAvatar","bigAvatar","hdrProfLogo","editAvatarTrigger"].forEach(id=>{
+  const el=$(id);
+  if(!el)return;
+  if(logoUrl){
+   el.style.backgroundImage=`url("${logoUrl}")`;
+   el.style.backgroundSize="cover";
+   el.style.backgroundPosition="center";
+   if(id==="editAvatarTrigger"){
+    $("editAvatarLetter").textContent="";
+   }else{
+    el.textContent="";
+   }
+  }else{
+   el.style.backgroundImage="";
+   if(id==="editAvatarTrigger"){
+    $("editAvatarLetter").textContent=initial;
+   }else{
+    el.textContent=initial;
+   }
+  }
+ });
+}
+
+async function syncHeaderProfileState(){
+ if(!currentUser)return;
+ const fallbackName=currentUser.email?.split("@")[0]||"X Hub Creator";
+ const fallbackHandle="@"+fallbackName.toLowerCase().replace(/[^a-z0-9_]/g,"_");
+ const {data}=await sb.from("profiles").select("channel_name,username,logo_url").eq("user_id",currentUser.id).maybeSingle();
+ const name=data?.channel_name||fallbackName;
+ let handle=data?.username||fallbackHandle;
+ if(handle && !handle.startsWith("@")) handle="@"+handle;
+ const logo=data?.logo_url||"";
+ hdrProfileCache={channel_name:name,username:handle,logo_url:logo};
+ applyProfileVisuals(name,handle,logo);
 }
 
 async function showApp(user){
@@ -359,13 +509,13 @@ async function showApp(user){
  $("loginWrap").classList.add("hidden");
  $("app").classList.remove("hidden");
  const email=user.email||"Creator";
- const initial=email.charAt(0).toUpperCase();
- $("headerAvatar").textContent=initial;$("bigAvatar").textContent=initial;
- $("creatorName").textContent=email.split("@")[0];$("profileName").textContent=email.split("@")[0];
+ const fallbackName=email.split("@")[0]||"X Hub Creator";
+ const fallbackHandle="@"+fallbackName.toLowerCase().replace(/[^a-z0-9_]/g,"_");
+ applyProfileVisuals(fallbackName,fallbackHandle,"");
  $("profileEmail").textContent=email;$("profileId").textContent=user.id;
  if(!isSameUser){
   openPage(getSavedPage(), true);
-  void Promise.all([loadVideos(),loadChannelAnalytics()]);
+  void Promise.all([syncHeaderProfileState(),loadVideos(),loadChannelAnalytics()]);
  }
 }
 
@@ -377,8 +527,8 @@ function showLogin(){
 
 function openPage(page, skipSave){
  if(!VALID_PAGES.includes(page)) page="dashboard";
- if(!skipSave) localStorage.setItem(ACTIVE_PAGE_KEY, page);
- ["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));
+ if(!skipSave && page!=="headerProfile" && page!=="editHeaderProfile") localStorage.setItem(ACTIVE_PAGE_KEY, page);
+ ["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance","headerProfile","editHeaderProfile"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));
  document.querySelectorAll("[data-page]").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
  if(page==="content")loadVideos();
  if(page==="analytics")loadChannelAnalytics();
@@ -386,7 +536,102 @@ function openPage(page, skipSave){
 document.querySelectorAll("[data-page]").forEach(n=>n.addEventListener("click",()=>openPage(n.dataset.page)));
 document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden")));
 
-$("headerAvatar").addEventListener("click",()=>openPage("profile"));
+$("headerAvatar").addEventListener("click",async()=>{
+ const currentVisible=VALID_PAGES.find(p=>!$(p+"Page")?.classList.contains("hidden"));
+ if(currentVisible && currentVisible!=="headerProfile" && currentVisible!=="editHeaderProfile"){
+  prevPageBeforeHeaderProfile=currentVisible;
+ }
+ $("hdrLogoutBox").classList.add("hidden");
+ await syncHeaderProfileState();
+ openPage("headerProfile",true);
+});
+
+$("hdrProfBackBtn").addEventListener("click",()=>openPage(prevPageBeforeHeaderProfile||"dashboard",true));
+$("hdrSettingsToggleBtn").addEventListener("click",()=>$("hdrLogoutBox").classList.toggle("hidden"));
+$("hdrLogoutConfirmBtn").addEventListener("click",logout);
+
+$("hdrProfEditBtn").addEventListener("click",()=>{
+ $("nameEditBox").classList.add("hidden");
+ $("handleEditBox").classList.add("hidden");
+ $("nameEditInput").value=hdrProfileCache.channel_name||$("hdrProfName").textContent;
+ $("handleEditInput").value=hdrProfileCache.username||$("hdrProfHandle").textContent;
+ openPage("editHeaderProfile",true);
+});
+
+$("editProfBackBtn").addEventListener("click",()=>openPage("headerProfile",true));
+
+$("editAvatarTrigger").addEventListener("click",()=>$("hdrLogoGalleryInput").click());
+$("hdrLogoGalleryInput").addEventListener("change",async()=>{
+ const f=$("hdrLogoGalleryInput").files && $("hdrLogoGalleryInput").files[0];
+ if(!f || !currentUser)return;
+ notice("Uploading logo...");
+ const safeLogo=f.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+ const logoPath=`${currentUser.id}/logo_${Date.now()}_${safeLogo}`;
+ const {error:upErr}=await sb.storage.from(BUCKET).upload(logoPath,f,{upsert:false,contentType:f.type||"image/jpeg"});
+ if(upErr){notice("Logo upload failed: "+upErr.message);return;}
+ const {data:pub}=sb.storage.from(BUCKET).getPublicUrl(logoPath);
+ const logoUrl=pub?.publicUrl||"";
+ const {error:dbErr}=await sb.from("profiles").upsert({
+  user_id:currentUser.id,
+  channel_name:hdrProfileCache.channel_name||$("editNameDisplay").textContent,
+  username:hdrProfileCache.username||$("editHandleDisplay").textContent,
+  logo_url:logoUrl
+ },{onConflict:"user_id"});
+ if(dbErr){notice("Could not save logo: "+dbErr.message);return;}
+ hdrProfileCache.logo_url=logoUrl;
+ applyProfileVisuals(hdrProfileCache.channel_name,hdrProfileCache.username,logoUrl);
+ $("hdrLogoGalleryInput").value="";
+ notice("Profile logo updated!");
+});
+
+$("openNameEditBtn").addEventListener("click",()=>{
+ $("handleEditBox").classList.add("hidden");
+ $("nameEditInput").value=hdrProfileCache.channel_name||$("editNameDisplay").textContent;
+ $("nameEditBox").classList.toggle("hidden");
+ if(!$("nameEditBox").classList.contains("hidden")) $("nameEditInput").focus();
+});
+$("cancelNameEditBtn").addEventListener("click",()=>$("nameEditBox").classList.add("hidden"));
+$("saveNameEditBtn").addEventListener("click",async()=>{
+ if(!currentUser)return;
+ const nextName=$("nameEditInput").value.trim();
+ if(!nextName){notice("Name cannot be empty.");return;}
+ const {error}=await sb.from("profiles").upsert({
+  user_id:currentUser.id,
+  channel_name:nextName,
+  username:hdrProfileCache.username||$("editHandleDisplay").textContent,
+  ...(hdrProfileCache.logo_url?{logo_url:hdrProfileCache.logo_url}:{})
+ },{onConflict:"user_id"});
+ if(error){notice("Name update failed: "+error.message);return;}
+ hdrProfileCache.channel_name=nextName;
+ applyProfileVisuals(nextName,hdrProfileCache.username,hdrProfileCache.logo_url);
+ $("nameEditBox").classList.add("hidden");
+ notice("Name updated!");
+});
+
+$("openHandleEditBtn").addEventListener("click",()=>{
+ $("nameEditBox").classList.add("hidden");
+ $("handleEditInput").value=hdrProfileCache.username||$("editHandleDisplay").textContent;
+ $("handleEditBox").classList.toggle("hidden");
+ if(!$("handleEditBox").classList.contains("hidden")) $("handleEditInput").focus();
+});
+$("cancelHandleEditBtn").addEventListener("click",()=>$("handleEditBox").classList.add("hidden"));
+$("saveHandleEditBtn").addEventListener("click",async()=>{
+ if(!currentUser)return;
+ let nextHandle=$("handleEditInput").value.trim();
+ if(!nextHandle){notice("Handle cannot be empty.");return;}
+ if(!nextHandle.startsWith("@")) nextHandle="@"+nextHandle;
+ const {error}=await sb.from("profiles").upsert({
+  user_id:currentUser.id,
+  channel_name:hdrProfileCache.channel_name||$("editNameDisplay").textContent,
+  username:nextHandle,
+  ...(hdrProfileCache.logo_url?{logo_url:hdrProfileCache.logo_url}:{})
+ },{onConflict:"user_id"});
+ if(error){notice("Handle update failed: "+error.message);return;}
+ hdrProfileCache.username=nextHandle;
+ applyProfileVisuals(hdrProfileCache.channel_name,nextHandle,hdrProfileCache.logo_url);
+ $("handleEditBox").classList.add("hidden");
+ notice("Handle updated!");
+});
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
 
 $("uploadShortcut").addEventListener("click",()=>{
@@ -644,20 +889,20 @@ $("videoPerformance").addEventListener("click",()=>{if(selectedVideo)openVideoPe
 async function loadChannelAnalytics(){
  if(!currentUser)return;
  const [profileRes,subTotalRes,subGainRes,eventRes,videoRes]=await Promise.all([
-  sb.from("profiles").select("channel_name,logo_url").eq("user_id",currentUser.id).maybeSingle(),
+  sb.from("profiles").select("channel_name,username,logo_url").eq("user_id",currentUser.id).maybeSingle(),
   sb.from("subscriptions").select("id",{count:"exact",head:true}).eq("channel_id",currentUser.id),
   sb.from("subscriptions").select("id",{count:"exact",head:true}).eq("channel_id",currentUser.id),
   sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id),
   sb.from("videos").select("id,title,views,likes,thumbnail_url,created_at").eq("user_id",currentUser.id).order("views",{ascending:false}).limit(3)
  ]);
  if(profileRes.data){
-  $("creatorName").textContent=profileRes.data.channel_name||currentUser.email?.split("@")[0]||"X Hub Creator";
-  if(profileRes.data.logo_url){
-   $("bigAvatar").style.backgroundImage=`url("${profileRes.data.logo_url}")`;
-   $("bigAvatar").style.backgroundSize="cover";$("bigAvatar").style.backgroundPosition="center";$("bigAvatar").textContent="";
-   $("headerAvatar").style.backgroundImage=`url("${profileRes.data.logo_url}")`;
-   $("headerAvatar").style.backgroundSize="cover";$("headerAvatar").style.backgroundPosition="center";$("headerAvatar").textContent="";
-  }
+  const fallbackName=currentUser.email?.split("@")[0]||"X Hub Creator";
+  const name=profileRes.data.channel_name||fallbackName;
+  let handle=profileRes.data.username||("@"+fallbackName.toLowerCase().replace(/[^a-z0-9_]/g,"_"));
+  if(handle && !handle.startsWith("@")) handle="@"+handle;
+  const logo=profileRes.data.logo_url||"";
+  hdrProfileCache={channel_name:name,username:handle,logo_url:logo};
+  applyProfileVisuals(name,handle,logo);
  }
  if(subTotalRes.error||subGainRes.error||eventRes.error){
   notice("Analytics tables are not ready. Run the SQL setup first.");
