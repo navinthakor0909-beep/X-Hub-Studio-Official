@@ -35,25 +35,17 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-height:116px}
 .stat .value{font-size:30px;font-weight:700;margin-top:10px}
 .panel{background:#171719;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
-.uploadrow{display:grid;grid-template-columns:1fr 1.5fr auto;gap:10px;align-items:end}.uploadrow label{margin-top:0}
+.uploadrow{display:grid;grid-template-columns:1fr;gap:14px}.uploadrow label{margin-top:0}
+.progress-wrap{margin-top:16px;background:#252529;border:1px solid var(--line);border-radius:10px;height:14px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:var(--blue);transition:width .15s linear}
+.progress-text{font-size:13px;font-weight:700;margin-top:8px;color:var(--ink)}
 .video{display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--line)}.video:last-child{border-bottom:0}
 .thumb{width:145px;aspect-ratio:16/9;height:auto;flex-shrink:0;border-radius:10px;background:#29292e;display:grid;place-items:center;color:var(--blue);font-size:25px}
 .vinfo{flex:1;min-width:0}.vtitle{font-weight:700;overflow-wrap:anywhere}.vdate{font-size:12px;color:var(--muted);margin-top:6px}
-.actions{display:flex;gap:7px;position:relative}.menuWrap{position:relative;flex-shrink:0}.menuTrigger{padding:8px 10px;background:#252529;border:1px solid var(--line);color:var(--ink);font-size:20px;line-height:1}.videoMenu{position:absolute;right:0;top:42px;z-index:20;min-width:150px;background:#202024;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 8px 24px #0008}.videoMenu button{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);padding:11px;border-radius:8px}.videoMenu button:hover{background:#333}.videoMenu .menuDelete{color:#ff6878}.empty{padding:30px;text-align:center;color:var(--muted)}
+.actions{display:flex;gap:7px;position:relative}.menuWrap{position:relative;flex-shrink:0}.menuTrigger{padding:8px 12px;background:#252529;border:1px solid var(--line);color:var(--ink);font-size:18px;line-height:1;border-radius:10px}.menuTrigger:hover{background:#303036}.videoMenu{position:absolute;right:0;top:42px;z-index:20;min-width:155px;background:#202024;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 8px 24px #0008}.videoMenu button{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);padding:11px;border-radius:8px;font-size:14px}.videoMenu button:hover{background:#333}.videoMenu .menuDelete{color:#ff6878}.empty{padding:30px;text-align:center;color:var(--muted)}
 .profile-row{display:grid;grid-template-columns:180px 1fr;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
 #notice{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#182033;color:#fff;padding:12px 17px;border-radius:12px;z-index:10;display:none;max-width:90vw}
 .mobile-nav{display:none}
-.upload-drop{border:2px dashed #555560;border-radius:18px;min-height:200px;display:grid;place-items:center;text-align:center;padding:22px;background:#141416;cursor:pointer}
-.thumb-pick{display:flex;align-items:center;gap:14px;padding:10px;border:1px solid var(--line);background:#171719;border-radius:15px;margin:16px 0}
-.thumb-preview{width:112px;height:72px;object-fit:cover;border-radius:10px;background:#29292e}
-.progress-wrap{height:10px;background:#303036;border-radius:99px;overflow:hidden;margin-top:10px}
-.progress-bar{height:100%;width:1%;background:#ef233c;transition:width .15s}
-.menuWrap{position:relative;flex-shrink:0}.menuTrigger{padding:8px 10px;background:#252529;border:1px solid var(--line);color:var(--ink);font-size:20px}
-.videoMenu{position:absolute;right:0;top:42px;z-index:20;min-width:145px;background:#202024;border:1px solid var(--line);border-radius:12px;padding:6px}
-.videoMenu button{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);padding:11px}
-.videoMenu .menuDelete{color:#ff6878}
-.profile-edit{max-width:520px}.profile-photo-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-.profile-photo{width:86px;height:86px;border-radius:50%;object-fit:cover;background:#29292e}
 @media(max-width:760px){
  header{height:64px;padding:0 14px}.brand{font-size:17px}.brand .brandmark{width:34px;height:34px}
  .layout{display:block}aside{display:none}main{padding:20px 15px 95px}
@@ -108,23 +100,23 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
     <div class="panel" style="margin-top:18px"><h2>Most popular content</h2><div id="popularList"><div class="empty">Loading...</div></div></div>
    </section>
    <section id="uploadPage" class="hidden">
-    <div class="topline"><button class="secondary" id="uploadBack" type="button">‹ Back</button><h1>Upload Video</h1></div>
-    <form id="studioUploadForm" class="panel">
-     <label class="upload-drop" for="studioVideoFile"><span><span style="font-size:52px">☁️⬆</span><strong style="display:block;font-size:20px;margin:10px">Tap to Upload Video</strong><span class="muted">or select from gallery</span></span></label>
-     <input id="studioVideoFile" type="file" accept="video/*" required>
-     <div class="thumb-pick"><img id="thumbPreview" class="thumb-preview" alt="Thumbnail preview"><div style="flex:1"><strong>Thumbnail</strong><input id="studioThumbFile" type="file" accept="image/*" style="margin-top:8px"></div></div>
-     <label for="studioVideoTitle">Video Title</label><input id="studioVideoTitle" maxlength="150" required placeholder="Video Title...">
-     <div id="uploadProgressArea" class="hidden" style="margin-top:20px"><div style="display:flex;justify-content:space-between"><strong id="uploadStatus">Uploading...</strong><strong id="uploadPercent">1%</strong></div><div class="progress-wrap"><div id="uploadProgressBar" class="progress-bar"></div></div></div>
-     <button class="primary" id="studioPublishBtn" type="submit" style="width:100%;margin-top:22px;padding:16px">⬆ Publish Video</button>
-    </form>
+    <div class="topline"><div><h1>Upload Video</h1><div class="muted">Publish directly from XHub Studio</div></div><button class="secondary" id="uploadBackBtn" type="button">‹ Back</button></div>
+    <div class="panel">
+     <form id="uploadForm" class="uploadrow">
+      <div><label for="videoTitle">Video title</label><input id="videoTitle" maxlength="150" required placeholder="Enter video title"></div>
+      <div><label for="videoFile">Video file</label><input id="videoFile" type="file" accept="video/*" required></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
+       <button class="primary" id="uploadBtn" type="submit">Upload Video</button>
+      </div>
+     </form>
+     <div id="uploadProgressBox" class="hidden">
+      <div class="progress-wrap"><div class="progress-fill" id="uploadProgressFill"></div></div>
+      <div class="progress-text" id="uploadProgressText">0%</div>
+     </div>
+    </div>
    </section>
    <section id="contentPage" class="hidden">
     <div class="topline"><div><h1>Manage Your Videos</h1></div></div>
-    <div class="panel hidden"><h2>Upload video</h2><form id="uploadForm" class="uploadrow">
-     <div><label for="videoTitle">Video title</label><input id="videoTitle" maxlength="150" required placeholder="Enter video title"></div>
-     <div><label for="videoFile">Video file</label><input id="videoFile" type="file" accept="video/*" required></div>
-     <button class="primary" id="uploadBtn" type="submit">Upload</button>
-    </form><p class="muted" style="font-size:12px">Upload availability depends on your Supabase Storage settings.</p></div>
     <div id="statVideos" style="display:none">0</div>
     <div class="panel"><h2 style="margin-bottom:12px">Your videos</h2><div id="videoList"><div class="empty">Loading videos...</div></div></div>
    </section>
@@ -150,13 +142,8 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
     <div class="panel"><h2>Earnings coming soon</h2><p class="muted">Earning totals and payout details will appear here after a secure earnings data source is connected. No estimated or made-up balance is shown.</p></div>
    </section>
    <section id="profilePage" class="hidden">
-    <div class="topline"><div><h1>Creator Profile</h1><div class="muted">Edit your channel details</div></div></div>
-    <form id="profileEditForm" class="panel profile-edit">
-     <div class="profile-photo-row"><img id="profilePhotoPreview" class="profile-photo" alt="Profile photo"><div><strong>Profile Photo</strong><input id="profilePhotoFile" type="file" accept="image/*" style="margin-top:8px"></div></div>
-     <label for="profileDisplayName">Name</label><input id="profileDisplayName" maxlength="60" placeholder="Your name" required>
-     <label for="profileUsername">Username</label><input id="profileUsername" maxlength="30" placeholder="username" required>
-     <button class="primary" id="saveProfileBtn" type="submit" style="width:100%;margin-top:20px">Save Profile</button>
-    </form>
+    <div class="topline"><div><h1>Creator Profile</h1><div class="muted">Your signed-in account</div></div></div>
+    <div class="panel"><div class="profile-row"><strong>Creator name</strong><span id="profileName">X Hub Creator</span></div><div class="profile-row"><strong>Email</strong><span id="profileEmail">—</span></div><div class="profile-row"><strong>Account ID</strong><span id="profileId" style="overflow-wrap:anywhere">—</span></div></div>
    </section>
    <section id="settingsPage" class="hidden">
     <div class="topline"><div><h1>Settings</h1><div class="muted">Studio account settings</div></div></div>
@@ -169,8 +156,6 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
   <button data-page="content"><span class="ico">▣</span>Content</button>
   <button data-page="analytics"><span class="ico">▥</span>Analytics</button>
   <button data-page="earning"><span class="ico">＄</span>Earning</button>
-  <button id="mobileUploadBtn" type="button" style="color:white;background:#ef233c;border-radius:50%;max-width:55px;height:50px;margin:auto;font-size:25px">＋</button>
-  <button data-page="profile"><span class="ico">◉</span>Profile</button>
  </nav>
 </section>
 <div id="notice"></div>
@@ -214,7 +199,7 @@ function showLogin(){
 }
 
 function openPage(page){
- ["dashboard","content","upload","analytics","earning","profile","settings","videoDetail","videoPerformance"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));
+ ["dashboard","upload","content","analytics","earning","profile","settings","videoDetail","videoPerformance"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));
  document.querySelectorAll("[data-page]").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
  if(page==="content")loadVideos();
  if(page==="analytics")loadChannelAnalytics();
@@ -223,10 +208,14 @@ document.querySelectorAll("[data-page]").forEach(n=>n.addEventListener("click",(
 document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden")));
 
 $("headerAvatar").addEventListener("click",()=>openPage("profile"));
-$("uploadShortcut").addEventListener("click",()=>openPage("upload"));
-$("mobileUploadBtn").addEventListener("click",()=>openPage("upload"));
-$("uploadBack").addEventListener("click",()=>openPage("content"));
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
+$("uploadShortcut").addEventListener("click",()=>{
+ $("uploadProgressBox").classList.add("hidden");
+ $("uploadProgressFill").style.width="0%";
+ $("uploadProgressText").textContent="0%";
+ openPage("upload");
+});
+$("uploadBackBtn").addEventListener("click",()=>openPage("dashboard"));
 
 $("loginForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -352,13 +341,48 @@ async function loadVideos(){
       upload.textContent=date;
 
       info.append(title,meta,upload);
-      const wrap=document.createElement("div");wrap.className="menuWrap";
-      const trigger=document.createElement("button");trigger.type="button";trigger.className="menuTrigger";trigger.textContent="⋮";
-      const menu=document.createElement("div");menu.className="videoMenu hidden";
-      const edit=document.createElement("button");edit.type="button";edit.textContent="Edit Video";edit.onclick=ev=>{ev.stopPropagation();menu.classList.add("hidden");editTitle(v);};
-      const del=document.createElement("button");del.type="button";del.className="menuDelete";del.textContent="Delete Video";del.onclick=ev=>{ev.stopPropagation();menu.classList.add("hidden");deleteVideo(v,del);};
-      menu.append(edit,del);trigger.onclick=ev=>{ev.stopPropagation();document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden"));menu.classList.toggle("hidden");};wrap.append(trigger,menu);
-      row.append(thumb,info,wrap);
+
+      const menuWrap=document.createElement("div");
+      menuWrap.className="menuWrap";
+
+      const trigger=document.createElement("button");
+      trigger.type="button";
+      trigger.className="menuTrigger";
+      trigger.title="More options";
+      trigger.textContent="⋮";
+
+      const menu=document.createElement("div");
+      menu.className="videoMenu hidden";
+
+      const editBtn=document.createElement("button");
+      editBtn.type="button";
+      editBtn.textContent="Edit Video";
+      editBtn.addEventListener("click",e=>{
+        e.stopPropagation();
+        menu.classList.add("hidden");
+        editTitle(v);
+      });
+
+      const delBtn=document.createElement("button");
+      delBtn.type="button";
+      delBtn.className="menuDelete";
+      delBtn.textContent="Delete Video";
+      delBtn.addEventListener("click",e=>{
+        e.stopPropagation();
+        menu.classList.add("hidden");
+        deleteVideo(v,delBtn);
+      });
+
+      menu.append(editBtn,delBtn);
+      trigger.addEventListener("click",e=>{
+        e.stopPropagation();
+        const wasHidden=menu.classList.contains("hidden");
+        document.querySelectorAll(".videoMenu").forEach(m=>m.classList.add("hidden"));
+        if(wasHidden)menu.classList.remove("hidden");
+      });
+
+      menuWrap.append(trigger,menu);
+      row.append(thumb,info,menuWrap);
       row.addEventListener("click",()=>{openVideoPerformance(v);});
       box.appendChild(row);
     });
@@ -374,7 +398,6 @@ $("watchOnSite").addEventListener("click",()=>window.open("https://xhub-xxx.page
 
 async function openVideoPerformance(v){selectedVideo=v;openPage("videoPerformance");const {data}=await sb.from("video_analytics_events").select("event_type,watch_seconds,created_at").eq("channel_id",currentUser.id).eq("video_id",selectedVideo.id).order("created_at",{ascending:true});const ev=data||[];const vc=ev.filter(x=>x.event_type==="view");const sec=ev.filter(x=>x.event_type==="watch_time").reduce((a,x)=>a+(Number(x.watch_seconds)||0),0);$("oneVideoViews").textContent=(vc.length||Number(selectedVideo.views)||0).toLocaleString();$("oneVideoWatch").textContent=sec>=3600?(sec/3600).toFixed(1)+" hr":Math.floor(sec/60)+" min";const counts={};vc.forEach(x=>{const k=new Date(x.created_at).toLocaleDateString();counts[k]=(counts[k]||0)+1});const max=Math.max(1,...Object.values(counts));$("oneVideoGraph").innerHTML=Object.entries(counts).map(([d,n])=>`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>${d}</span><b>${n}</b></div><div style="height:7px;background:#333;border-radius:8px"><div style="height:7px;width:${n/max*100}%;background:#ef233c;border-radius:8px"></div></div></div>`).join("")||"No view history recorded yet.";}
 $("videoPerformance").addEventListener("click",()=>{if(selectedVideo)openVideoPerformance(selectedVideo)});
-
 
 async function loadChannelAnalytics(){
  if(!currentUser)return;
@@ -434,73 +457,94 @@ async function deleteVideo(video,button){
  if(error){button.disabled=false;notice("Database delete failed: "+error.message);return}notice("Video deleted.");loadVideos();
 }
 
-$("uploadForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!currentUser)return;const file=$("videoFile").files[0],title=$("videoTitle").value.trim();if(!file||!title)return;
- const btn=$("uploadBtn");btn.disabled=true;btn.textContent="Uploading...";
- const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");const path=currentUser.id+"/"+Date.now()+"_"+safeName;
- const {error:uploadError}=await sb.storage.from(BUCKET).upload(path,file,{upsert:false,contentType:file.type||"video/mp4"});
- if(uploadError){notice("Upload failed: "+uploadError.message);btn.disabled=false;btn.textContent="Upload";return}
- const {error:insertError}=await sb.from("videos").insert({title,file_path:path,user_id:currentUser.id});
- if(insertError){await sb.storage.from(BUCKET).remove([path]);notice("Video record save failed: "+insertError.message);btn.disabled=false;btn.textContent="Upload";return}
- $("uploadForm").reset();notice("Video uploaded successfully.");btn.disabled=false;btn.textContent="Upload";loadVideos();
-});
+function uploadWithProgress(path, file, accessToken, onProgress) {
+ return new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  xhr.open("POST", `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${encodedPath}`);
+  xhr.setRequestHeader("apikey", SUPABASE_KEY);
+  xhr.setRequestHeader("Authorization", `Bearer ${accessToken || SUPABASE_KEY}`);
+  xhr.setRequestHeader("x-upsert", "false");
+  xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
 
+  xhr.upload.onprogress = e => {
+   if (e.lengthComputable && typeof onProgress === "function") {
+    const pct = Math.min(100, Math.max(1, Math.round((e.loaded / e.total) * 100)));
+    onProgress(pct);
+   }
+  };
 
-// Upload directly from X-Hub Studio to Supabase Storage with real progress events.
-function studioStorageUpload(path,file,onProgress){
- return new Promise(async(resolve,reject)=>{
-  const {data,error}=await sb.auth.getSession();
-  if(error||!data.session?.access_token){reject(error||new Error("Login session missing"));return;}
-  const xhr=new XMLHttpRequest();
-  const url=SUPABASE_URL+"/storage/v1/object/"+encodeURIComponent(BUCKET)+"/"+path.split("/").map(encodeURIComponent).join("/");
-  xhr.open("POST",url);xhr.setRequestHeader("apikey",SUPABASE_KEY);
-  xhr.setRequestHeader("Authorization","Bearer "+data.session.access_token);
-  xhr.setRequestHeader("Content-Type",file.type||"application/octet-stream");xhr.setRequestHeader("x-upsert","false");
-  xhr.upload.onprogress=e=>{if(e.lengthComputable)onProgress(Math.max(1,Math.min(99,Math.round(e.loaded/e.total*100))))};
-  xhr.onload=()=>{if(xhr.status>=200&&xhr.status<300){onProgress(100);resolve()}else{let m=xhr.responseText||"Storage upload failed";try{m=JSON.parse(m).message||m}catch{}reject(new Error(m))}};
-  xhr.onerror=()=>reject(new Error("Network error"));xhr.send(file);
+  xhr.onload = () => {
+   if (xhr.status >= 200 && xhr.status < 300) {
+    if (typeof onProgress === "function") onProgress(100);
+    resolve();
+   } else {
+    let msg = `Upload failed (${xhr.status})`;
+    try {
+     const res = JSON.parse(xhr.responseText);
+     if (res.message || res.error) msg = res.message || res.error;
+    } catch (_) {}
+    reject(new Error(msg));
+   }
+  };
+
+  xhr.onerror = () => reject(new Error("Network error during upload."));
+  xhr.send(file);
  });
 }
-$("studioThumbFile").addEventListener("change",()=>{const f=$("studioThumbFile").files[0];if(f)$("thumbPreview").src=URL.createObjectURL(f)});
-$("studioUploadForm").addEventListener("submit",async e=>{
- e.preventDefault();const file=$("studioVideoFile").files[0],thumb=$("studioThumbFile").files[0],title=$("studioVideoTitle").value.trim();
- if(!currentUser||!file||!title){notice("Choose a video and enter its title.");return}
- const btn=$("studioPublishBtn"),area=$("uploadProgressArea"),bar=$("uploadProgressBar"),pct=$("uploadPercent"),status=$("uploadStatus");
- btn.disabled=true;btn.textContent="Uploading...";area.classList.remove("hidden");bar.style.width="1%";pct.textContent="1%";status.textContent="Uploading video...";
- const safe=n=>n.replace(/[^a-zA-Z0-9._-]/g,"_"),videoPath=currentUser.id+"/"+Date.now()+"_"+safe(file.name);let thumbPath=null;
- try{
-  await studioStorageUpload(videoPath,file,n=>{bar.style.width=n+"%";pct.textContent=n+"%"});
-  if(thumb){status.textContent="Saving thumbnail...";thumbPath=currentUser.id+"/thumb_"+Date.now()+"_"+safe(thumb.name);await studioStorageUpload(thumbPath,thumb,()=>{})}
-  const row={title,file_path:videoPath,user_id:currentUser.id};if(thumbPath)row.thumbnail_path=thumbPath;
-  const {error}=await sb.from("videos").insert(row);if(error)throw error;
-  status.textContent="Upload Complete";bar.style.width="100%";pct.textContent="100%";notice("Video published!");
-  $("studioUploadForm").reset();$("thumbPreview").removeAttribute("src");
-  setTimeout(()=>{area.classList.add("hidden");openPage("content");loadVideos()},800);
- }catch(err){notice("Upload failed: "+err.message);status.textContent="Upload failed";await sb.storage.from(BUCKET).remove([videoPath]);if(thumbPath)await sb.storage.from(BUCKET).remove([thumbPath])}
- finally{btn.disabled=false;btn.textContent="⬆ Publish Video"}
-});
-async function loadCreatorProfile(){
+
+$("uploadForm").addEventListener("submit",async e=>{
+ e.preventDefault();
  if(!currentUser)return;
- const {data,error}=await sb.from("profiles").select("channel_name,username,logo_path").eq("user_id",currentUser.id).maybeSingle();
- if(error){console.warn(error.message);return}
- if(data){$("profileDisplayName").value=data.channel_name||$("profileDisplayName").value;$("profileUsername").value=data.username||$("profileUsername").value;
-  if(data.logo_path){const {data:u}=sb.storage.from("avatars").getPublicUrl(data.logo_path);$("profilePhotoPreview").src=u.publicUrl;
-   ["headerAvatar","bigAvatar"].forEach(id=>{const el=$(id);el.style.backgroundImage=`url("${u.publicUrl}")`;el.style.backgroundSize="cover";el.style.backgroundPosition="center";el.textContent=""})}
- }
-}
-$("profileEditForm").addEventListener("submit",async e=>{
- e.preventDefault();const name=$("profileDisplayName").value.trim(),username=$("profileUsername").value.trim().replace(/^@/,"");
- if(!name||!username){notice("Enter name and username.");return}
- const btn=$("saveProfileBtn");btn.disabled=true;
+ const file=$("videoFile").files[0],title=$("videoTitle").value.trim();
+ if(!file||!title)return;
+
+ const btn=$("uploadBtn");
+ const pBox=$("uploadProgressBox");
+ const pFill=$("uploadProgressFill");
+ const pText=$("uploadProgressText");
+
+ btn.disabled=true;
+ btn.textContent="Uploading...";
+ pBox.classList.remove("hidden");
+ pFill.style.width="1%";
+ pText.textContent="Uploading: 1%";
+
+ const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+ const path=currentUser.id+"/"+Date.now()+"_"+safeName;
+
  try{
-  const photo=$("profilePhotoFile").files[0];let logo_path;
-  if(photo){logo_path=currentUser.id+"/avatar_"+Date.now()+"_"+photo.name.replace(/[^a-zA-Z0-9._-]/g,"_");const {error}=await sb.storage.from("avatars").upload(logo_path,photo,{contentType:photo.type||"image/jpeg"});if(error)throw error}
-  const payload={user_id:currentUser.id,channel_name:name,username};if(logo_path)payload.logo_path=logo_path;
-  const {error}=await sb.from("profiles").upsert(payload,{onConflict:"user_id"});if(error)throw error;
-  $("creatorName").textContent=name;if(logo_path){const {data:u}=sb.storage.from("avatars").getPublicUrl(logo_path);$("profilePhotoPreview").src=u.publicUrl;["headerAvatar","bigAvatar"].forEach(id=>{const el=$(id);el.style.backgroundImage=`url("${u.publicUrl}")`;el.style.backgroundSize="cover";el.style.backgroundPosition="center";el.textContent=""})}
-  notice("Profile saved successfully");
- }catch(err){notice("Profile save failed: "+err.message)}
- finally{btn.disabled=false}
+  const {data:sessionData}=await sb.auth.getSession();
+  const token=sessionData?.session?.access_token;
+
+  await uploadWithProgress(path, file, token, pct=>{
+   pFill.style.width=pct+"%";
+   pText.textContent=`Uploading: ${pct}%`;
+  });
+
+  const {data:pub}=sb.storage.from(BUCKET).getPublicUrl(path);
+  const insertPayload={title,file_path:path,user_id:currentUser.id};
+  if(pub?.publicUrl)insertPayload.video_url=pub.publicUrl;
+
+  const {error:insertError}=await sb.from("videos").insert(insertPayload);
+  if(insertError){
+   await sb.storage.from(BUCKET).remove([path]);
+   throw new Error("Video record save failed: "+insertError.message);
+  }
+
+  $("uploadForm").reset();
+  notice("Video uploaded successfully.");
+  openPage("content");
+  loadChannelAnalytics();
+ }catch(err){
+  notice(err.message||"Upload failed.");
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Upload Video";
+  pBox.classList.add("hidden");
+  pFill.style.width="0%";
+  pText.textContent="0%";
+ }
 });
 
 // SESSION INITIALIZATION & PERSISTENCE FIX
