@@ -35,10 +35,54 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);min-height:116px}
 .stat .value{font-size:30px;font-weight:700;margin-top:10px}
 .panel{background:#171719;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
-.uploadrow{display:grid;grid-template-columns:1fr;gap:14px}.uploadrow label{margin-top:0}
-.progress-wrap{margin-top:16px;background:#252529;border:1px solid var(--line);border-radius:10px;height:14px;overflow:hidden}
-.progress-fill{height:100%;width:0%;background:var(--blue);transition:width .15s linear}
-.progress-text{font-size:13px;font-weight:700;margin-top:8px;color:var(--ink)}
+
+/* NEW UPLOAD PAGE STYLES MATCHING REFERENCE IMAGE */
+.up-shell{max-width:620px;margin:0 auto}
+.up-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.up-brand{display:flex;align-items:center;gap:14px}
+.up-cloud-badge{width:54px;height:42px;display:grid;place-items:center}
+.up-head-title{font-size:24px;font-weight:800;margin:0;line-height:1.15}
+.up-head-sub{font-size:13px;color:var(--muted);margin-top:3px}
+.drop-zone{background:#16161a;border:2px dashed #4a4a52;border-radius:18px;padding:34px 20px;text-align:center;transition:border-color .2s,background .2s;cursor:pointer;margin-bottom:20px}
+.drop-zone.dragover{border-color:#ff001e;background:#1e171a}
+.drop-cloud-ico{width:54px;height:54px;margin:0 auto 12px;display:grid;place-items:center}
+.drop-main-txt{font-size:17px;font-weight:700;color:#fff;margin-bottom:6px}
+.drop-or{font-size:12px;color:var(--muted);margin-bottom:14px}
+.choose-vid-btn{display:inline-flex;align-items:center;gap:8px;background:#ff001e;color:#fff;padding:11px 22px;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 4px 16px rgba(255,0,30,.28)}
+.choose-vid-btn:hover{background:#e0001a}
+.drop-formats{font-size:12px;color:var(--muted);margin-top:16px}
+.selected-file-pill{margin-top:12px;display:inline-block;background:#232329;border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:12px;color:#4ade80;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.thumb-card{background:#141417;border:1px solid #26262c;border-radius:18px;padding:18px;margin-bottom:18px}
+.thumb-hdr{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;margin-bottom:14px}
+.info-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--muted);color:var(--muted);display:inline-grid;place-items:center;font-size:11px;font-weight:700}
+.thumb-preview-box{width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1d263b 0%,#3a2c4d 45%,#b5583c 80%,#f0a868 100%);display:grid;place-items:center;border:1px solid #2e2e36}
+.thumb-preview-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.thumb-center-icon{width:64px;height:52px;border-radius:12px;border:3px solid #fff;background:rgba(0,0,0,.22);display:grid;place-items:center;z-index:1}
+.change-thumb-btn{width:100%;margin-top:14px;background:#1e1e23;border:1px solid #32323a;color:#fff;padding:13px;border-radius:12px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px}
+.change-thumb-btn:hover{background:#27272e}
+
+.title-card{background:#141417;border:1px solid #26262c;border-radius:16px;padding:16px;margin-bottom:18px}
+.title-lbl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#e4e4e7;margin-bottom:10px}
+.yt-mini-badge{width:20px;height:14px;background:#ff001e;border-radius:4px;display:inline-grid;place-items:center}
+.title-card input{background:#1b1b20;border:1px solid #2f2f37;border-radius:10px;padding:12px 14px;font-size:14px}
+
+.proc-card{background:#141417;border:1px solid #26262c;border-radius:16px;padding:16px 18px;margin-bottom:22px;display:flex;align-items:center;gap:16px}
+.ring-wrap{width:54px;height:54px;position:relative;flex-shrink:0;display:grid;place-items:center}
+.ring-svg{width:54px;height:54px;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#2d2d35;stroke-width:4.5}
+.ring-fg{fill:none;stroke:#ff001e;stroke-width:4.5;stroke-linecap:round;stroke-dasharray:138.23;stroke-dashoffset:138.23;transition:stroke-dashoffset .15s linear}
+.ring-pct{position:absolute;font-size:12px;font-weight:800;color:#fff}
+.proc-info{flex:1;min-width:0}
+.proc-title{font-size:14px;font-weight:700;color:#fff}
+.proc-sub{font-size:12px;color:var(--muted);margin-top:3px;margin-bottom:10px}
+.proc-bar-track{width:100%;height:5px;background:#2b2b33;border-radius:999px;overflow:hidden}
+.proc-bar-fill{height:100%;width:0%;background:#ff001e;border-radius:999px;transition:width .15s linear}
+
+.publish-big-btn{width:100%;background:#ff001e;color:#fff;padding:17px 24px;border-radius:18px;font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 6px 24px rgba(255,0,30,.32)}
+.publish-big-btn:hover{background:#e0001a}
+.publish-big-btn:disabled{opacity:.65;cursor:not-allowed}
+
 .video{display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--line)}.video:last-child{border-bottom:0}
 .thumb{width:145px;aspect-ratio:16/9;height:auto;flex-shrink:0;border-radius:10px;background:#29292e;display:grid;place-items:center;color:var(--blue);font-size:25px}
 .vinfo{flex:1;min-width:0}.vtitle{font-weight:700;overflow-wrap:anywhere}.vdate{font-size:12px;color:var(--muted);margin-top:6px}
@@ -51,7 +95,7 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
  .layout{display:block}aside{display:none}main{padding:20px 15px 95px}
  .profile-head{gap:13px}.big-avatar{width:78px;height:78px;font-size:36px}.profile-name{font-size:20px}.sub-count{font-size:25px}
  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.stat{padding:18px;min-height:105px}.stat .value{font-size:26px}
- .uploadrow{grid-template-columns:1fr}.video{gap:9px}.thumb{width:112px;height:auto;aspect-ratio:16/9}.actions{flex-direction:column}.actions button{padding:8px}
+ .video{gap:9px}.thumb{width:112px;height:auto;aspect-ratio:16/9}.actions{flex-direction:column}.actions button{padding:8px}
  .topline{align-items:flex-start}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:72px;background:#171719;border-top:1px solid var(--line);z-index:8;justify-content:space-around;padding:7px 3px calc(7px + env(safe-area-inset-bottom))}
  .mobile-nav button{background:transparent;color:#667085;padding:5px 7px;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
  .mobile-nav button.active{color:var(--blue)}.mobile-nav .ico{font-size:21px}
@@ -99,22 +143,112 @@ main{width:100%;max-width:1280px;margin:0 auto;padding:28px 30px 90px}
     </div>
     <div class="panel" style="margin-top:18px"><h2>Most popular content</h2><div id="popularList"><div class="empty">Loading...</div></div></div>
    </section>
+
+   <!-- NEW UPLOAD PAGE MATCHING REFERENCE DESIGN -->
    <section id="uploadPage" class="hidden">
-    <div class="topline"><div><h1>Upload Video</h1><div class="muted">Publish directly from XHub Studio</div></div><button class="secondary" id="uploadBackBtn" type="button">‹ Back</button></div>
-    <div class="panel">
-     <form id="uploadForm" class="uploadrow">
-      <div><label for="videoTitle">Video title</label><input id="videoTitle" maxlength="150" required placeholder="Enter video title"></div>
-      <div><label for="videoFile">Video file</label><input id="videoFile" type="file" accept="video/*" required></div>
-      <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
-       <button class="primary" id="uploadBtn" type="submit">Upload Video</button>
+    <div class="up-shell">
+     <div class="up-head">
+      <div class="up-brand">
+       <div class="up-cloud-badge">
+        <svg width="52" height="38" viewBox="0 0 64 46" fill="none">
+         <path d="M51.5 19.2C50.4 10.6 43.1 4 34.2 4C26.7 4 20.3 8.7 17.8 15.4C11.1 16.3 6 22 6 29C6 36.7 12.3 43 20 43H50C56.6 43 62 37.6 62 31C62 24.8 57.3 19.8 51.5 19.2Z" fill="#ff001e"/>
+         <path d="M32 16L24 25H29.5V34H34.5V25H40L32 16Z" fill="#0b0b0d"/>
+        </svg>
+       </div>
+       <div>
+        <h1 class="up-head-title">Upload Video</h1>
+        <div class="up-head-sub">Share your creativity with the world</div>
+       </div>
       </div>
-     </form>
-     <div id="uploadProgressBox" class="hidden">
-      <div class="progress-wrap"><div class="progress-fill" id="uploadProgressFill"></div></div>
-      <div class="progress-text" id="uploadProgressText">0%</div>
+      <button class="secondary" id="uploadBackBtn" type="button">‹ Back</button>
      </div>
+
+     <form id="uploadForm">
+      <input id="videoFile" type="file" accept="video/*" class="hidden">
+      <input id="thumbFile" type="file" accept="image/*" class="hidden">
+
+      <!-- Drag & Drop Zone -->
+      <div class="drop-zone" id="videoDropZone">
+       <div class="drop-cloud-ico">
+        <svg width="48" height="36" viewBox="0 0 64 46" fill="none">
+         <path d="M51.5 19.2C50.4 10.6 43.1 4 34.2 4C26.7 4 20.3 8.7 17.8 15.4C11.1 16.3 6 22 6 29C6 36.7 12.3 43 20 43H50C56.6 43 62 37.6 62 31C62 24.8 57.3 19.8 51.5 19.2Z" fill="#ffffff"/>
+         <path d="M32 16L24 25H29.5V34H34.5V25H40L32 16Z" fill="#16161a"/>
+        </svg>
+       </div>
+       <div class="drop-main-txt">Drag &amp; Drop your video here</div>
+       <div class="drop-or">or</div>
+       <button type="button" class="choose-vid-btn" id="chooseVideoBtn">
+        <svg width="16" height="14" viewBox="0 0 20 16" fill="none"><path d="M2 2C0.9 2 0 2.9 0 4V14C0 15.1 0.9 16 2 16H18C19.1 16 20 15.1 20 14V5C20 3.9 19.1 3 18 3H10L8 1H2V2Z" fill="#fff"/></svg>
+        Choose Video
+       </button>
+       <div class="drop-formats">Supported formats: MP4, MOV, AVI, WebM &bull; Max size: 2GB</div>
+       <div id="selectedVideoName" class="selected-file-pill hidden"></div>
+      </div>
+
+      <!-- Thumbnail Card -->
+      <div class="thumb-card">
+       <div class="thumb-hdr">
+        <span>Thumbnail</span>
+        <span class="info-dot" title="Upload a custom thumbnail image">i</span>
+       </div>
+       <div class="thumb-preview-box" id="thumbPreviewBox">
+        <img id="thumbPreviewImg" class="hidden" alt="Thumbnail preview">
+        <div class="thumb-center-icon" id="thumbDefaultIcon">
+         <svg width="34" height="28" viewBox="0 0 24 20" fill="none">
+          <circle cx="7.5" cy="6.5" r="2.2" fill="#fff"/>
+          <path d="M2 17L8.5 10L13 14.5L16.5 11L22 17H2Z" fill="#fff"/>
+         </svg>
+        </div>
+       </div>
+       <button type="button" class="change-thumb-btn" id="changeThumbBtn">
+        <svg width="18" height="16" viewBox="0 0 24 20" fill="none">
+         <path d="M9 1L7.17 3H3C1.9 3 1 3.9 1 5V17C1 18.1 1.9 19 3 19H21C22.1 19 23 18.1 23 17V5C23 3.9 22.1 3 21 3H16.83L15 1H9ZM12 16C9.24 16 7 13.76 7 11C7 8.24 9.24 6 12 6C14.76 6 17 8.24 17 11C17 13.76 14.76 16 12 16Z" fill="#fff"/>
+         <circle cx="12" cy="11" r="3" fill="#fff"/>
+        </svg>
+        Change Thumbnail
+       </button>
+      </div>
+
+      <!-- Video Title Input -->
+      <div class="title-card">
+       <div class="title-lbl">
+        <span class="yt-mini-badge">
+         <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 1.5L8.5 5L2 8.5V1.5Z" fill="#fff"/></svg>
+        </span>
+        <span>Video Title *</span>
+       </div>
+       <input id="videoTitle" maxlength="150" required placeholder="Enter video title...">
+      </div>
+
+      <!-- Circular + Linear Progress Card (Empty round ring until Publish Video clicked) -->
+      <div class="proc-card" id="uploadProgressBox">
+       <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 52 52">
+         <circle class="ring-bg" cx="26" cy="26" r="22"></circle>
+         <circle class="ring-fg" id="uploadRingCircle" cx="26" cy="26" r="22"></circle>
+        </svg>
+        <span class="ring-pct" id="uploadRingPct"></span>
+       </div>
+       <div class="proc-info">
+        <div class="proc-title" id="uploadProcTitle">Ready to upload</div>
+        <div class="proc-sub" id="uploadProcSub">Click Publish Video to start</div>
+        <div class="proc-bar-track">
+         <div class="proc-bar-fill" id="uploadProgressFill"></div>
+        </div>
+       </div>
+      </div>
+
+      <!-- Publish Video Button -->
+      <button class="publish-big-btn" id="uploadBtn" type="submit">
+       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3L5 10H9.5V16H14.5V10H19L12 3ZM5 19V21H19V19H5Z" fill="#fff"/>
+       </svg>
+       <span id="uploadBtnLabel">Publish Video</span>
+      </button>
+     </form>
     </div>
    </section>
+
    <section id="contentPage" class="hidden">
     <div class="topline"><div><h1>Manage Your Videos</h1></div></div>
     <div id="statVideos" style="display:none">0</div>
@@ -176,6 +310,28 @@ let currentUser=null;let selectedVideo=null;
 const $=id=>document.getElementById(id);
 function notice(message){const n=$("notice");n.textContent=message;n.style.display="block";clearTimeout(notice.timer);notice.timer=setTimeout(()=>n.style.display="none",3500)}
 
+const RING_CIRCUMFERENCE = 2 * Math.PI * 22; // 138.23
+function resetUploadProgressUI(){
+ const circle = $("uploadRingCircle");
+ circle.style.strokeDasharray = RING_CIRCUMFERENCE;
+ circle.style.strokeDashoffset = RING_CIRCUMFERENCE;
+ $("uploadRingPct").textContent = "";
+ $("uploadProgressFill").style.width = "0%";
+ $("uploadProcTitle").textContent = "Ready to upload";
+ $("uploadProcSub").textContent = "Click Publish Video to start";
+}
+
+function setUploadProgressUI(pct, subText){
+ const safePct = Math.min(100, Math.max(1, pct));
+ const circle = $("uploadRingCircle");
+ const offset = RING_CIRCUMFERENCE - (safePct / 100) * RING_CIRCUMFERENCE;
+ circle.style.strokeDashoffset = offset;
+ $("uploadRingPct").textContent = safePct + "%";
+ $("uploadProgressFill").style.width = safePct + "%";
+ $("uploadProcTitle").textContent = "Uploading your video...";
+ if(subText) $("uploadProcSub").textContent = subText;
+}
+
 async function showApp(user){
  if(!user)return;
  const isSameUser=currentUser && currentUser.id===user.id;
@@ -209,13 +365,68 @@ document.addEventListener("click",()=>document.querySelectorAll(".videoMenu").fo
 
 $("headerAvatar").addEventListener("click",()=>openPage("profile"));
 $("refreshAnalyticsBtn").addEventListener("click",loadChannelAnalytics);
+
 $("uploadShortcut").addEventListener("click",()=>{
- $("uploadProgressBox").classList.add("hidden");
- $("uploadProgressFill").style.width="0%";
- $("uploadProgressText").textContent="0%";
+ $("uploadForm").reset();
+ $("selectedVideoName").classList.add("hidden");
+ $("selectedVideoName").textContent="";
+ $("thumbPreviewImg").classList.add("hidden");
+ $("thumbPreviewImg").src="";
+ $("thumbDefaultIcon").classList.remove("hidden");
+ resetUploadProgressUI();
  openPage("upload");
 });
 $("uploadBackBtn").addEventListener("click",()=>openPage("dashboard"));
+
+// Drag & Drop + File Picker Interactions
+const dropZone = $("videoDropZone");
+const videoInput = $("videoFile");
+const thumbInput = $("thumbFile");
+
+$("chooseVideoBtn").addEventListener("click", e => {
+ e.stopPropagation();
+ videoInput.click();
+});
+dropZone.addEventListener("click", () => videoInput.click());
+
+dropZone.addEventListener("dragover", e => {
+ e.preventDefault();
+ dropZone.classList.add("dragover");
+});
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop", e => {
+ e.preventDefault();
+ dropZone.classList.remove("dragover");
+ if(e.dataTransfer.files && e.dataTransfer.files[0]){
+  videoInput.files = e.dataTransfer.files;
+  handleVideoSelected(e.dataTransfer.files[0]);
+ }
+});
+
+videoInput.addEventListener("change", () => {
+ if(videoInput.files && videoInput.files[0]){
+  handleVideoSelected(videoInput.files[0]);
+ }
+});
+
+function handleVideoSelected(file){
+ const pill = $("selectedVideoName");
+ pill.textContent = "Selected: " + file.name;
+ pill.classList.remove("hidden");
+ if(!$("videoTitle").value.trim()){
+  $("videoTitle").value = file.name.replace(/\.[^/.]+$/, "");
+ }
+}
+
+$("changeThumbBtn").addEventListener("click", () => thumbInput.click());
+thumbInput.addEventListener("change", () => {
+ const f = thumbInput.files && thumbInput.files[0];
+ if(!f) return;
+ const url = URL.createObjectURL(f);
+ $("thumbPreviewImg").src = url;
+ $("thumbPreviewImg").classList.remove("hidden");
+ $("thumbDefaultIcon").classList.add("hidden");
+});
 
 $("loginForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -467,16 +678,26 @@ function uploadWithProgress(path, file, accessToken, onProgress) {
   xhr.setRequestHeader("x-upsert", "false");
   xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
 
+  const startTime = Date.now();
   xhr.upload.onprogress = e => {
    if (e.lengthComputable && typeof onProgress === "function") {
     const pct = Math.min(100, Math.max(1, Math.round((e.loaded / e.total) * 100)));
-    onProgress(pct);
+    const elapsedSec = (Date.now() - startTime) / 1000;
+    let remText = "Uploading to XHub...";
+    if (elapsedSec > 1 && e.loaded > 0 && pct < 100) {
+     const rate = e.loaded / elapsedSec;
+     const remSec = Math.max(1, Math.round((e.total - e.loaded) / rate));
+     remText = remSec >= 60 ? `About ${Math.ceil(remSec / 60)} min remaining` : `About ${remSec} sec remaining`;
+    } else if (pct === 100) {
+     remText = "Finalizing video...";
+    }
+    onProgress(pct, remText);
    }
   };
 
   xhr.onload = () => {
    if (xhr.status >= 200 && xhr.status < 300) {
-    if (typeof onProgress === "function") onProgress(100);
+    if (typeof onProgress === "function") onProgress(100, "Upload complete!");
     resolve();
    } else {
     let msg = `Upload failed (${xhr.status})`;
@@ -496,54 +717,67 @@ function uploadWithProgress(path, file, accessToken, onProgress) {
 $("uploadForm").addEventListener("submit",async e=>{
  e.preventDefault();
  if(!currentUser)return;
- const file=$("videoFile").files[0],title=$("videoTitle").value.trim();
- if(!file||!title)return;
+ const file=$("videoFile").files[0];
+ const thumbFile=$("thumbFile").files[0];
+ const title=$("videoTitle").value.trim();
+ if(!file){notice("Please choose a video file first.");return}
+ if(!title){notice("Please enter a video title.");return}
 
  const btn=$("uploadBtn");
- const pBox=$("uploadProgressBox");
- const pFill=$("uploadProgressFill");
- const pText=$("uploadProgressText");
-
+ const btnLbl=$("uploadBtnLabel");
  btn.disabled=true;
- btn.textContent="Uploading...";
- pBox.classList.remove("hidden");
- pFill.style.width="1%";
- pText.textContent="Uploading: 1%";
+ btnLbl.textContent="Publishing...";
+ setUploadProgressUI(1, "Starting upload...");
 
  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
  const path=currentUser.id+"/"+Date.now()+"_"+safeName;
+ let thumbPath=null;
 
  try{
   const {data:sessionData}=await sb.auth.getSession();
   const token=sessionData?.session?.access_token;
 
-  await uploadWithProgress(path, file, token, pct=>{
-   pFill.style.width=pct+"%";
-   pText.textContent=`Uploading: ${pct}%`;
+  await uploadWithProgress(path, file, token, (pct, remText)=>{
+   setUploadProgressUI(pct, remText);
   });
+
+  let thumbUrl=null;
+  if(thumbFile){
+   const safeThumb=thumbFile.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+   thumbPath=currentUser.id+"/thumb_"+Date.now()+"_"+safeThumb;
+   const {error:tErr}=await sb.storage.from(BUCKET).upload(thumbPath,thumbFile,{upsert:false,contentType:thumbFile.type||"image/jpeg"});
+   if(!tErr){
+    const {data:tPub}=sb.storage.from(BUCKET).getPublicUrl(thumbPath);
+    if(tPub?.publicUrl)thumbUrl=tPub.publicUrl;
+   }
+  }
 
   const {data:pub}=sb.storage.from(BUCKET).getPublicUrl(path);
   const insertPayload={title,file_path:path,user_id:currentUser.id};
   if(pub?.publicUrl)insertPayload.video_url=pub.publicUrl;
+  if(thumbUrl)insertPayload.thumbnail_url=thumbUrl;
 
   const {error:insertError}=await sb.from("videos").insert(insertPayload);
   if(insertError){
    await sb.storage.from(BUCKET).remove([path]);
+   if(thumbPath)await sb.storage.from(BUCKET).remove([thumbPath]);
    throw new Error("Video record save failed: "+insertError.message);
   }
 
   $("uploadForm").reset();
-  notice("Video uploaded successfully.");
+  $("selectedVideoName").classList.add("hidden");
+  $("thumbPreviewImg").classList.add("hidden");
+  $("thumbDefaultIcon").classList.remove("hidden");
+  resetUploadProgressUI();
+  notice("Video published successfully!");
   openPage("content");
   loadChannelAnalytics();
  }catch(err){
   notice(err.message||"Upload failed.");
+  resetUploadProgressUI();
  }finally{
   btn.disabled=false;
-  btn.textContent="Upload Video";
-  pBox.classList.add("hidden");
-  pFill.style.width="0%";
-  pText.textContent="0%";
+  btnLbl.textContent="Publish Video";
  }
 });
 
